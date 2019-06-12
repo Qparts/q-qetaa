@@ -1,0 +1,336 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:o="http://omnifaces.org/ui">
+
+<h:head>
+	<title>#{lex.title}</title>
+	<link rel="stylesheet"
+		  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet"
+		  href="https://fonts.googleapis.com/css?family=Raleway" />
+	<meta charset="UTF-8" name="viewport"
+		  content="width=device-width, initial-scale=1" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="description" content="#{lex.metaDesc}" />
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}" />
+	<h:outputStylesheet library="css" name="bootstrap.css" />
+	<h:outputStylesheet library="css" name="style.css" />
+	<h:outputStylesheet library="css" name="page.css" />
+	<h:outputStylesheet library="css" name="hover.css" />
+	<h:outputStylesheet library="css" name="bootstrap-rtl.css" />
+	<h:outputScript library="js" name="bootstrap.min.js" />
+	<h:outputScript library="js" name="qit3.js" />
+	<h:outputScript library="js" name="jsf-fix.js" />
+</h:head>
+<h:body>
+	<ui:include src="/_includes/_customer_google_tag.xhtml" />
+	<f:view>
+		<ui:include src="/_includes/_customer_top.xhtml" />
+		<h:form>
+			<h:outputText
+					value="#{activityMonitorBean.addToActivity('visited checkout page')}" />
+		</h:form>
+		<section id="account">
+			<div class="container">
+				<div class="row">
+					<ui:include src="/_includes/_customer_menu_bar.xhtml" />
+				</div>
+			</div>
+		</section>
+
+		<h:outputText value="#{cartBean.checkStage()}"/>
+
+		<section id="page">
+			<div class="container">
+				<h:panelGroup rendered="#{cartBean.stage eq 3}">
+					<div class="row3">
+					<div class="col-lg-12 col-xs-12" align="center">
+						<div class="paragraph-title">إتمام الشراء</div>
+					</div>
+
+					<o:form id="form-3" styleClass="form-inline" includeViewParams="true">
+						<div align="center" class="col-md-6 col-md-offset-3 col-xs-12 ">
+							<h:outputText
+									value="لم تتم عملية الدفع بنجاح, الرجاء المحاولة مرة اخرى"
+									rendered="#{cartBean.paymentFailed}" styleClass="q-bold"
+									style="color:red;" />
+							<p:messages id="msgs" />
+						</div>
+
+						<h:panelGroup id="price-panel">
+							<div align="center" class="col-lg-12 col-md-12 col-xs-12">
+								<div
+										class="col-lg-2 col-lg-offset-3 col-md-2 col-md-offset-3 col-xs-6 table-bordered">
+									<p style="font-size: 12px; color: #aaaaaa">#{lex.totalParts}</p>
+									<p>
+										<h:outputText value="#{cartBean.cartRequest.totalProducts}"
+													  style="font-weight: 600;color: #888">
+											<f:convertNumber type="currency" currencySymbol="SR "
+															 locale="en_US" />
+										</h:outputText>
+									</p>
+								</div>
+								<div class="col-lg-2 col-md-2 col-xs-6 table-bordered">
+									<p style="font-size: 12px; color: #aaaaaa">#{lex.deliveryFees}</p>
+									<p>
+										<h:outputText value="#{cartBean.cartRequest.deliveryCharges}"
+													  style="font-weight: 600;color: #888" id="del-fees">
+											<f:convertNumber type="currency" currencySymbol="SR "
+															 locale="en_US" />
+										</h:outputText>
+									</p>
+								</div>
+								<div class="col-lg-2 col-md-2 col-xs-12 table-bordered">
+									<p style="font-size: 12px; color: #aaaaaa">#{lex.vat}</p>
+									<p>
+										<h:outputText
+												value="#{cartBean.cartRequest.totalVat}"
+												style="font-weight: 600;color: #888" id="vat">
+											<f:convertNumber type="currency" currencySymbol="SR "
+															 locale="en_US" />
+										</h:outputText>
+									</p>
+								</div>
+								<div class="col-md-6 col-md-offset-3 col-xs-12 table-bordered">
+									<h:outputText value="#{lex.total}" style="font-size: 12px; color: #aaaaaa" />
+									<br />
+									<h:outputText id="total-price" style="color: #{partssOrderBean.cart.promoCodeObject.discountPromo ? '#aaa;text-decoration: line-through' : '#cc4f1d'}; font-weight: 600; font-size: 20px"
+												  value="#{cartBean.cartRequest.grandTotal}">
+										<f:convertNumber type="currency" currencySymbol="SR "
+														 locale="en_US" />
+									</h:outputText>
+									<br /> <br />
+									<h:panelGroup id="promo-price">
+										<h:panelGroup
+												rendered="#{cartBean.promoVerified and cartBean.cartRequest.discount.discountType eq 'P'}">
+											<h:outputText value="#{lex.promoDiscount}"
+														  style="font-size: 12px; color: #aaaaaa" />
+											<br />
+											<h:outputText
+													value="#{cartBean.cartRequest.totalDiscount}"
+													style="color:#cc4f1d">
+												<f:convertNumber currencySymbol="SR " type="currency" />
+											</h:outputText>
+											<br />
+											<br />
+											<h:outputText value="#{lex.totalPriceAfterDiscount}"
+														  style="font-size: 12px; color: #aaaaaa" />
+											<p style="font-size: 20px;">
+												<h:outputText style="color: #cc4f1d; font-weight: 600;"
+															  id="total-price-promo"
+															  value="#{((partsOrderBsean.deliveryCharges * partsOrdesrBean.cart.vatPercentage) + (partsOrdersBean.partOrder.newTotalPrice * partsOrderBsean.cart.vatPercentage) + partssOrderBean.deliveryCharges + psartsOrderBean.partOrder.newTotalPrice) - partsOrdserBean.cart.promoCodeObject.discountPercentage * partsOrdersBean.deliveryCharges - partsOrsderBean.cart.promoCodeObject.discountPercentage * partsOsrderBean.partOrder.newTotalPrice}">
+													<f:convertNumber type="currency" currencySymbol="SR "
+																	 locale="en_US" />
+												</h:outputText>
+											</p>
+										</h:panelGroup>
+
+
+									</h:panelGroup>
+
+
+									<div>
+										<h:panelGroup id="promo-question" >
+											<h:panelGroup rendered="#{not cartBean.promoVerified}">
+												<p>#{lex.promCodeQuestion}</p>
+												<h:selectBooleanCheckbox value="#{cartBean.havePromo}" style="height:20px">
+													<f:ajax execute="@this" render="promo-panel"/>
+												</h:selectBooleanCheckbox>
+											</h:panelGroup>
+										</h:panelGroup>
+										<h:panelGroup id="promo-panel">
+											<h:panelGroup rendered="#{cartBean.havePromo and not cartBean.promoVerified}">
+												<p>#{lex.promCodeEnter}</p>
+												<h:inputText id="in" value="#{cartBean.promoCodeQuery}"
+															 styleClass="form-control" style="width:100px"
+															 disabled="#{cartBean.promoVerified}" />
+												<br />
+												<h:commandLink
+														actionListener="#{cartBean.verifyPromoCode()}"
+														value="#{lex.promCodeVerify}"
+														rendered="#{not cartBean.promoVerified}">
+													<f:ajax execute="in @this" render="promo-panel promo-question promo-price total-price msgs"/>
+												</h:commandLink>
+												<br />
+											</h:panelGroup>
+										</h:panelGroup>
+									</div>
+								</div>
+							</div>
+
+						</h:panelGroup>
+						<div class="col-lg-12 col-md-12 col-xs-12">
+							<br />
+						</div>
+
+						<div class="col-xs-12">
+							<div class="row">
+								<div class="col-xs-12" align="center">
+									<div class="paragraph-title">إتمام الشراء</div>
+								</div>
+								<div class="col-md-4 col-md-offset-4 col-xs-12">
+									<h:outputText value="#{cartBean.cartRequest.address.line1} ,"/>
+									<h:outputText value="#{cartBean.cartRequest.address.line2} ,"/>
+									<h:outputText value="#{countryBean.getRegionFromId(countryBean.getCityFromId(cartBean.cartRequest.address.cityId).regionId).nameAr} -  "/>
+									<h:outputText value="#{countryBean.getCityFromId(cartBean.cartRequest.address.cityId).nameAr}"/>
+								</div>
+								<br/>
+								<br/>
+							</div>
+
+							<div class="col-lg-12 col-xs-12" align="center">
+								<div class="paragraph-title">الدفع</div>
+							</div>
+
+							<div class="col-md-4 col-md-offset-4 col-xs-12">
+								<h:outputText value="#{lex.paymentMethod}"
+											  style="font-size: 12px; color: #aaaaaa" />
+							</div>
+							<div class="col-md-4 col-md-offset-4 col-xs-12">
+								<h:selectOneMenu value="#{cartBean.paymentMethod}"
+												 id="payment" styleClass="form-control">
+									<f:selectItem itemValue="N" itemLabel="#{lex.selectPayment}" />
+									<f:selectItem itemValue="W" itemLabel="#{lex.wire}" />
+									<f:selectItem itemValue="V" itemLabel="#{lex.visa} - #{lex.masterCard}" />
+									<f:ajax execute="@form" render=":form-3"/>
+								</h:selectOneMenu>
+								<br /> <br />
+							</div>
+
+							<div class="col-xs-12" id="credit-card-div"
+								 style="display:#{cartBean.paymentMethod eq 'V' ? 'block' : 'none'};">
+								<div align="center">
+									<h:graphicImage value="/resources/images/visa.png" />
+									<h:graphicImage value="/resources/images/mastercard.png" />
+									<br /> <br />
+								</div>
+								<div class="col-md-3 col-md-offset-3 col-xs-12">
+									<h:outputText value="#{lex.cardNumber}" style="font-size: 12px; color: #aaaaaa" />
+									<h:inputText id="number" value="#{cartBean.cartRequest.ccNumber}" styleClass="form-control" a:maxlength="16">
+									</h:inputText>
+								</div>
+								<div class="col-md-3 col-xs-12">
+									<h:outputText value="#{lex.cardName}" style="font-size: 12px; color: #aaaaaa" />
+									<h:inputText value="#{cartBean.cartRequest.ccName}" styleClass="form-control">
+									</h:inputText>
+								</div>
+								<div class="col-md-2 col-md-offset-3 col-xs-6">
+									<h:outputText value="#{lex.cartYear}" style="font-size: 12px; color: #aaaaaa" />
+									<h:selectOneMenu styleClass="form-control" value="#{cartBean.cartRequest.ccYear}">
+										<f:selectItems value="#{cartBean.expiryDates}" var="year" itemValue="#{year}" itemLabel="#{year}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-2 col-xs-6">
+									<h:outputText value="#{lex.cartMonth}" style="font-size: 12px; color: #aaaaaa" />
+									<h:selectOneMenu styleClass="form-control" value="#{cartBean.cartRequest.ccMonth}">
+										<f:selectItems value="#{cartBean.expiryMonths}" var="month" itemValue="#{month}" itemLabel="#{month}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-2 col-md-offset-0 col-xs-6 col-xs-offset-3">
+									<h:outputText value="#{lex.cvc}" style="font-size: 12px; color: #aaaaaa" />
+									<h:inputText value="#{cartBean.cartRequest.ccCvc}" styleClass="form-control" a:maxlength="16"/>
+								</div>
+							</div>
+
+						</div>
+
+						<br />
+						<div align="center" class="col-md-2 col-md-offset-5  col-xs-12">
+							<br />
+							<h:commandButton actionListener="#{cartBean.checkout()}"
+											 styleClass="checkout-btn" value="#{lex.checkout}">
+								<f:ajax execute="@form" render=":steps-panel @form"/>
+							</h:commandButton>
+							<br /> <br />
+							<h:commandButton value="#{lex.previous}" styleClass="btn"
+											 actionListener="#{partssOrderBean.previous()}">
+								<f:ajax execute="@this" render=":steps-panel"/>
+								<f:param name="order" value="#{partsOrdesrBean.cart.id}"/>
+							</h:commandButton>
+						</div>
+					</o:form>
+
+				</div>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{cartBean.stage eq 4}">
+					<div align="center" class="paragraph-title">
+						<p>
+							<h:outputText value="#{lex.transferAmount}" />
+							<br />
+							<h:outputText value="#{cartBean.cartRequest.grandTotal}">
+								<f:convertNumber type="currency" currencySymbol="SR " locale="en_US"  />
+							</h:outputText>
+						</p>
+					</div>
+					<div align="center">
+						<div align="center" class="col-md-10 col-md-offset-1">
+							<p>#{lex.thanksWire}</p>
+							<p>#{lex.contactUsTransfer}</p>
+							<p>#{lex.transferInfo}</p>
+							<ui:repeat var="bank" value="#{bankBean.banks}">
+								<table class="table center table-bordered">
+									<tr>
+										<td>#{lex.bankName}:</td>
+										<td><h:outputText value="#{bank.nameAr}" /></td>
+
+									</tr>
+									<tr>
+										<td>#{lex.bankAccountNo}:</td>
+										<td><h:outputText value="#{bank.account}" /></td>
+									</tr>
+									<tr>
+										<td>#{lex.bankIBAN}:</td>
+										<td><h:outputText value="#{bank.iban}" /></td>
+									</tr>
+									<tr>
+										<td>#{lex.bankAccountOwner}:</td>
+										<td><h:outputText value="#{bank.owner}" /></td>
+									</tr>
+								</table>
+								<br />
+							</ui:repeat>
+						</div>
+					</div>
+					<div align="center">
+						<p>
+							<h:outputLink value="/">#{lex.home}</h:outputLink>
+						</p>
+					</div>
+					<h:outputText value="#{cartBean.setStage(1)}"/>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{cartBean.stage eq 5}">
+					<div align="center">
+						<p>#{lex.orderPaid}</p>
+						<p>#{lex.thanksForTrusting}</p>
+						<p>
+							<h:outputLink value="/">#{lex.home}</h:outputLink>
+						</p>
+					</div>
+					<h:outputText value="#{cartBean.setStage(1)}"/>
+				</h:panelGroup>
+
+			</div>
+		</section>
+
+
+		<footer>
+			<ui:include src="/_includes/customer_footer.xhtml" />
+		</footer>
+
+		<div class="w3-container">
+			<p:ajaxStatus onstart="PF('statusDialog').show()"
+						  onsuccess="PF('statusDialog').hide()" />
+			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+					  closable="false" resizable="false" showHeader="false">
+				<p:graphicImage name="/images/ajax-loader.gif" />
+			</p:dialog>
+		</div>
+	</f:view>
+</h:body>
+</html>

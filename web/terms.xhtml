@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<title>#{lex.title}</title>
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Raleway" />
+	<meta charset="UTF-8" name="viewport"
+		content="width=device-width, initial-scale=1" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="description" content="#{lex.metaDesc}"/>
+	<link rel="shortcut icon" type="image/x-icon"
+		href="#{resource['images/favicon.ico']}" />
+	<h:outputStylesheet library="css" name="bootstrap.css" />
+	<h:outputStylesheet library="css" name="style.css" />
+	<h:outputStylesheet library="css" name="page.css" />
+	<h:outputStylesheet library="css" name="hover.css" />
+	<h:outputStylesheet library="css" name="bootstrap-rtl.css" />
+	<h:outputScript library="js" name="bootstrap.min.js" />
+	<h:outputScript library="js" name="qit3.js" />
+	<h:outputScript library="primefaces" name="jquery/jquery.js"
+		target="head" />
+</h:head>
+<h:body>
+	<ui:include src="/_includes/_customer_google_tag" />
+	<f:view>
+		<ui:include src="/_includes/_customer_top" />
+		<h:form>
+			<h:outputText
+				value="#{activityMonitorBean.addToActivity('visited terms page')}" />
+		</h:form>
+		<section id="page">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-4" style="padding: 0;">
+					<div id="page-title">
+						<i class="fa fa-file-text-o" aria-hidden="true"></i>
+						<h:outputText value="الشروط والأحكام" />
+						<p:spacer />
+					</div>
+				</div>
+			</div>
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-8">
+						<p style="margin-top: 30px;">
+							<h:outputText
+								value="نرحب بكم في موقع قطع.كوم حيث أننا نعتبر منصة إلكترونية نعمل كوسيط لبيع قطع غيار السيارات الأصلية في السعودية بأسعار تنافسية " />
+						</p>
+					</div>
+				</div>
+				<div class="row" style="padding: 8px;">
+					<div class="panel-group" id="accordion">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion"
+										href="#collapse1"><i class="fa fa-plus" aria-hidden="true"></i>
+										<h:outputText value="الشروط والأحكام الخاصة بالموقع" /></a>
+								</h4>
+							</div>
+							<div id="collapse1" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="الإلتزام بتوفير القطع المطلوبة من جهات معتمدة وموثوقة" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="الإلتزام بمطابقة القطع المطلوبة قبل عملية الطلب" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="العمل على الحصول على أفضل التسعيرات الوكلاء والموزعين المعتمدين" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="الإلتزام بالتأكيد على طلب العميل قبل عملية الدفع" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="الإلتزام بالمحافطة على خصوصية بيانات العميل" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="ضمان قطع الغيار حسب أنظمة الضمان الصادرة من وزارة التجارة والإستثمار في المملكةالعربية السعودية، أو حسب الأنظمة التي يحددها الوكيل لكل قطعة، وبذلك يعتمد الضمان على الوكيل، ويتم الإستفادة من الضمان بإحتفاظك بنسخة الفاتورة المرسلة إليك إلكترونيا عبرالإيميل" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="الرد على جميع الاسئلة والإستفسارات الخاصة بالقطع المطلوبة" />
+									</p>
+								</div>
+
+							</div>
+						</div>
+
+
+
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion"
+										href="#collapse2"><i class="fa fa-plus" aria-hidden="true"></i>
+										<h:outputText value="الشروط والأحكام الخاصة بالعميل" /></a>
+								</h4>
+							</div>
+							<div id="collapse2" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="الإلتزام بتعبئة جميع المعلومات الشخصية وبيانات الطلب بشكل صحيح وكامل" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="تتم عملية الدفع بطريقة آمنة وموثوقة عن طريق (الفيزا. الحوالات البنكية ،الدفع عند الاستلام)" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="يحق للعميل الغاء الطلب قبل عملية الدفع دون أن يترتب على ذلك أي رسوم إضافية" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="في حال وجود عيب مصنعي بالقطعة يحق للعميل إرجاعها خلال 15 يوما من تاريخ استلامها مع تحمل الموقع تكاليف الاسترجاع" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="في حال وصول قطعة غير مطابقة للقطعة المطلوبه او عن طريق الخطأ يحق للعميل إرجاعها خلال  5 أيام من تاريخ استلامها مع تحمل الموقع تكاليف الإسترجاع" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="في حال تلف أو ضياع الكرتون أو الغلاف الخاص بالقطعة، لاتُرد ولا تستبدل " />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="القطع الكهربائية غير خاضعة لسياسة الإستبدال والإسترجاع" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="بعض القطع يتم طلبها طلبية خاصة وهي غير خاضعة لسياسة الإستبدال والإسترجاع فينبغي على العميل التأكد من قسم المبيعات اذا كانت القطع طلبية او كانت قطع غير قابله للاسترجاع" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="في حال وجدت مشكلة مصنعية في بعض القطع ، يتم النظر للمشكلة في حال تم تركيبها في ورش الوكالة و يقدم تقرير شامل، يتم ارساله للمورد و في حال الموافقة يتم الإستبدال أو استرجاع المبلغ" />
+									</p>
+									
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="في حال اختار العميل دفع عند الاستلام واستلم القطع المطلوبة من شركة الشحن بعد الدفع لهم، واراد استرجاعها مباشرة فانه لايتم استرجاع المبلغ الا بعد وصول القطع لمستودعاتنا وتأخذ إجراءات الارجاع الاعتياديه" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="إسترجاع أي مبلغ للعميل يتم خلال 6 أيام كحد أقصى، بشرط وجود او وصول القطع للمستودع" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="قد يتم إلغاء إي طلب تسعير تلقائيًا  بسبب عدم توفر القطع لدى الموردين أو عدم إضافة رقم الهيكل أو إسم القطعة المُدخل غير صحيح أو غير مفهوم" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="نحن نعمل كوسيط والاسعار وتوفر القطع متغيره بشكل دآئم ، في حال تم دفع المبلغ و كانت القطع بها تغير بالسعر او مدة التسليم او كانت القطع طلبيه من خارج السعوديه سيتم تبليغ العميل بالمتغيرات في مدة التسليم والسعر، ولدى العميل الخيار في استكمال اجراءات الطلب او استرجاع المبلغ." />
+									</p>
+									
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="سيتم بذل كُل الجهد لشحن الطلب حسب المواعيد المُحددة ولكن الموقع لايتحمل مسؤلية تأخير الشُحنه لظروف خارجة عن الإرادة" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="في حال كانت القطعة سليمة و بنفس المواصفات المطلوبة, فإنها لا تسترد و لا تستبدل إلا في حال موافقة المورد باسترجاعها او استبدالها مع خصم 10 بالمئة من قيمة القطعة و مع تحمل العميل تكاليف الاسترجاع" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="الاسترجاع يكون عن طريق ارسال بوليصات للعميل يطبعها العميل ويسلمها لشزكة الشحن، وفي حال لم يلتزم العميل بذلك وارسل القطع مباشرة يتحمل تكاليف الشحن الاضافية التي ستدفعها الشركة." />
+									</p>
+								</div>
+
+							</div>
+						</div>
+
+
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion"
+										href="#collapse3"><i class="fa fa-plus" aria-hidden="true"></i>
+										<h:outputText value="الإستخدام غير المشروع للموقع" /></a>
+								</h4>
+							</div>
+							<div id="collapse3" class="panel-collapse collapse in">
+								<div class="panel-body">
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="لايحق أن تستخدم الموقع استخدام غير قانوني ، أو إدخال أي فايروس أو  برامج ضارة تتسبب في تعطيل الموقع أو محاولة الوصول غير المصرح به إلى الموقع أو أي جهاز أو قاعدة بيانات متصلة بالموقع،" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="محتوى الموقع بالكامل بما في ذلك النصوص والفيديو والتسجيلات والصور محمية بموجب حقوق النشر وحقوق الملكية" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="يحق للموقع المقاضاة إذا تم إستخدامها بدون إذن مسبق" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="لايحق لك النسخ أو التعديل أو استغلال المُحتوى لغرض شخصي او تجاري بدون إذن مسبق" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="إثر زيارتك للموقع، أنت تؤكد موافقتك على الشروط والأحكام الحالية، كما يحتفظ الموقع بالحقّ في تغيير أو تعديل أو اضافة بعض شروط الاستخدام والأحكام، أو إزالتها في أي وقت ،وتصبح التغييرات سارية المفعول عندما يتم نشرها على الموقع ٫ لذلك نرجوا مراجعة شروط الاستخدام والأحكام بشكل منتظم لمواكبة كل التحديثات" />
+									</p>
+									<p style="padding: 8px;">
+										<i class="fa fa-square"
+											style="color: #117cc2; font-weight: bold;"> </i>
+										<h:outputText
+											value="كما نرحب في قطع.كوم بالتواصل معنا في حال وجود شكوى او استفسار على الايميل" />
+										<h:outputText value=" customer@qetaa.com " />
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+		</section>
+		<footer> <ui:include src="/_includes/customer_footer" /> </footer>
+	</f:view>
+</h:body>
+</html>

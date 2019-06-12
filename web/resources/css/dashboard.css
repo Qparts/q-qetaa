@@ -1,0 +1,292 @@
+@charset "ISO-8859-1";
+
+html, body, h1, h2, h3, h4, h5, p, span, .ui-widget {
+	font-family: "Raleway", sans-serif !important;
+	line-height: 1.5;
+	font-size: 10pt;
+	padding: 0;
+	margin: 0;
+}
+
+.q-vert-align, .q-vert-align .ui-datagrid-column{
+	vertical-align:top;
+}
+
+.q-navbar {
+	font-size: 22px;
+	padding: 0px 5px;
+}
+
+.q-dialog .ui-dialog-titlebar.ui-widget-header.ui-helper-clearfix.ui-corner-top.ui-draggable-handle
+	{
+	background: none;
+	color: #fff;
+	background-color: #2dacd1;
+	border: none !important;
+	text-shadow: none !important;
+}
+
+.q-nav-button {
+	color: white;
+	display: inline-block;
+	/* Inline elements with width and height. TL;DR they make the icon buttons stack from left-to-right instead of top-to-bottom */
+	position: relative;
+	/* All 'absolute'ly positioned elements are relative to this one */
+	padding: 2px 5px; /* Add some padding so it looks nice */
+}
+
+.q-notification-badge {
+	background-color: #fa3e3e;
+	border-radius: 2px;
+	color: white;
+	padding: 1px 3px;
+	font-size: 10px;
+	position: absolute;
+	/* 
+	Position the badge within the relatively positioned button */
+	top: 0;
+	right: 0;
+	height: 20px;
+}
+
+.q-text-white {
+	text-shadow: none !important;
+}
+
+.ui-panel .ui-panel-content {
+	background: white !important;
+}
+
+.ui-panel {
+	border: none;
+	background-color: #F0F0F0
+}
+
+.ui-panel-titlebar {
+	background: none;
+	border: none;
+}
+
+.ui-panel-titlebar-icon {
+	background: none !important;
+	border: none !important;
+}
+
+.ui-panel-titlebar-icon:hover {
+	background: none;
+	box-shadow: none;
+	border: none;
+}
+
+.ui-panel-title {
+	color: #555;
+}
+
+.ui-panel-titlebar-icon span {
+	border: none;
+}
+
+.q-bold {
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.no-border-table td {
+	border: 0 !important;
+}
+
+.inner-vendor-name {
+	width: 150px;
+}
+
+.inner-quantity {
+	width: 50px;
+}
+
+.inner-part-number {
+	width: 200px;
+}
+
+.inner-price {
+	width: 75px;
+}
+
+.inner-total {
+	width: 75px;
+}
+
+.scroll-div-400 {
+	height: 400px;
+	overflow-x: auto;
+	overflow-y: scroll;
+}
+
+.scroll-div-150 {
+	height: 150px;
+	overflow-x: auto;
+	overflow-y: scroll;
+}
+
+.scroll-div-200 {
+	height: 200px;
+	overflow-x: auto;
+	overflow-y: scroll;
+}
+
+.ui-layout-north {
+	background: #555 !important;
+}
+
+#north.ui-layout-unit.ui-widget.ui-widget-content.ui-corner-all.ui-layout-north.ui-layout-pane.ui-layout-pane-north.q-dashboard-background,
+	#west.ui-layout-unit.ui-widget.ui-widget-content.ui-corner-all.ui-layout-west.ui-layout-pane.ui-layout-pane-west.q-dashboard-background,
+	#north.ui-layout-unit.ui-widget.ui-widget-content.ui-corner-all.ui-layout-north.q-dashboard-background.ui-layout-pane.ui-layout-pane-north.ui-corner-all
+	{
+	background: #25383C !important;
+	-webkit-border-radius: 0px!imporant;
+	-moz-border-radius: 0px !important;
+	border-radius: 0px !important;
+	z-index: initial !important;
+}
+
+#west.ui-layout-unit.ui-widget.ui-widget-content.ui-corner-all.ui-layout-west.q-dashboard-background.ui-layout-pane.ui-layout-pane-west.ui-widget-content,
+	#north.ui-layout-unit.ui-widget.ui-widget-content.ui-corner-all.ui-layout-north.q-dashboard-background.ui-layout-pane.ui-layout-pane-north.ui-widget-content
+	{
+	border: none !important;
+}
+
+#north-resizer.ui-layout-resizer.ui-layout-resizer-north.ui-layout-resizer-open.ui-layout-resizer-north-open,
+	#west-resizer.ui-layout-resizer.ui-layout-resizer-west.ui-layout-resizer-open.ui-layout-resizer-west-open
+	{
+	background: #25383C !important;
+	z-index: -1 !important;
+}
+
+.ui-layout-north .ui-widget-content {
+	background: #25383C !important;
+}
+
+.ui-widget-content {
+	border: none;
+}
+
+.ui-layout-west .ui-widget-content {
+	background: #25383C !important;
+	color: #fff !important;
+}
+
+.ui-layout-west .ui-widget-content a, .ui-layout-north .ui-widget-content a
+	{
+	color: #fff !important;
+	text-decoration: none;
+}
+
+.q-large-text {
+	text-decoration: none;
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.q-med-text {
+	text-decoration: none!important;
+	font-size: 18px!important;
+	font-weight: bold!important;
+}
+
+div[id="form-g:error-growl_container"]>div {
+	background-color: #e85656!important;
+}
+
+div[id="form-g:success-growl_container"]>div {
+	background-color: #90b900!important;
+}
+
+
+
+
+.q-btn {
+	background: none!important;
+	background-color: #2dacd1!important;
+	color:#fff !important;
+	text-shadow:none !important;
+	box-shadow:none;
+	border:1px solid transparent!important;
+	border-color: #2dacd1!important;
+}
+
+.q-btn:hover{
+	background: #2dacd1!important;
+}
+
+
+
+
+.ui-panelmenu .ui-state-default,
+	.left-column .ui-panelmenu-content{
+		border: none;
+	background-color: #25383C;
+		
+}
+
+.ui-panelmenu .ui-state-default a {
+	border: none;
+	background-color: #25383C;
+	box-shadow: none;
+	color: #ccc;
+	text-shadow: none;
+	font-weight: normal;
+	border: 1px transparent;
+}
+
+.ui-panelmenu .ui-state-hover a {
+	border: none;
+	background-color: #374A5E;
+	box-shadow: none;
+	color: #fff;
+	text-shadow: none;
+	font-weight: normal;
+}
+
+.ui-panelmenu .ui-panelmenu-panel .ui-state-hover {
+	box-shadow: none;
+	border: none;
+}
+
+ .ui-menuitem .ui-menuitem-link {
+	font-size: 11pt;
+	background-color: #25383C;
+	padding: 4px 2px 4px 50px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+	box-shadow: none;
+	margin: 0;
+	border: 0;
+}
+
+.ui-menuitem a.ui-menuitem-link.ui-state-hover {
+	background-color: #25383C;
+	color: #fff;
+	background-image: none;
+	padding: 0.4em 0.4em 0.4em 2em;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+	margin: 0;
+	box-shadow: none;
+	text-shadow: none;
+	font-weight: normal;
+	border: 0;
+}
+
+
+
+.q-panel{
+	background:#ccf3ff;
+	text-decoration:none;
+	color:#516166;
+	width:200px;
+}
+
+.q-no-decoration{
+	text-decoration:none;
+}

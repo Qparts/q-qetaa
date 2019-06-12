@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div>
+		<div class="col-md-12 col-xs-12">
+			<h:panelGroup rendered="#{not loginBean.logged}">
+				<div class="col-md-3 col-xs-6">
+					<a id="myBtn"><i class="fa fa-sign-in" style="color: red" />#{lex.login}</a>
+				</div>
+				<div class="col-md-3 col-xs-6">
+					<a id="myBtn2" style="padding-left: 10px;"><i
+						class="fa fa-address-card-o" style="color: red" />
+						#{lex.createNewAccount}</a>
+				</div>
+
+			</h:panelGroup>
+			<h:outputText value="#{registerDialogBean.test()}" />
+			<h:panelGroup rendered="#{loginBean.logged}">
+				<div class="col-md-2 col-xs-6">
+					<a href="#" style="padding-left: 10px;"> <i class="fa fa-user"
+						style="color: red" /> #{lex.welcome}
+						#{loginBean.loginObject.customer.firstName}
+					</a>
+				</div>
+				<div class="col-md-2 col-xs-6">
+					<a id="myBtn4" style="padding-left: 10px;"><i
+						class="fa fa-sign-out" style="color: red" /> #{lex.logout}</a>
+				</div>
+				<div class="col-md-2 col-xs-6">
+					<a href="quotations" style="padding-left: 10px;"> <i
+						class="fa fa-shopping-cart" style="color: red" /> #{lex.myOrders}
+					</a>
+				</div>
+				<div class="col-md-2 col-xs-6">
+					<a href="past_orders"> <i class="fa fa-shopping-cart"
+						style="color: red" /> #{lex.pastOrders}
+					</a>
+				</div>
+				<h:panelGroup rendered="false">
+				<div class="col-md-2 col-xs-6">
+					<a href="loyalty"> <i class="fa fa-gift"
+						style="color: red" /> #{lex.loyaltyProg}
+					</a>
+				</div>
+				</h:panelGroup>
+				<h:form id="logout-form">
+					<p:remoteCommand name="doLogout"
+						actionListener="#{loginBean.doLogout()}" style="display: none;" />
+				</h:form>
+			</h:panelGroup>
+		</div>
+	</div>
+</ui:composition>

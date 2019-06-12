@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+	<header>
+		<div class="container headertop">
+			<div class="row">
+				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+					<a href="index"> 
+						<h:graphicImage value="/resources/images/logo.png"
+							rendered="true" styleClass="img-responsive logo" />
+					</a>
+				</div>
+				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+					<ul class="nav navbar-nav navbar-right">
+						<li><i class="fa fa-headphones" aria-hidden="true"/>#{lex.customerServiceSpecial}</li>
+						<li><i class="fa fa-credit-card-alt" aria-hidden="true"/>#{lex.bestPricesGurantee}</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</header>
+
+
+</ui:composition>

@@ -1,0 +1,302 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 26, 2017, 10:30:03 AM
+    Author     : Qit3
+*/
+html, body, h1, h2, h3, h4, h5, p, span, .ui-widget {
+	font-family: "Raleway", sans-serif !important;
+	line-height: 1.5;
+	font-size: 10pt;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+.q-dark-teal{
+	color:#fff!important;
+	background-color:#007777!important
+}
+
+
+
+.q-orange-new{
+	color:#fff!important;
+	background-color:#e7433e!important
+}
+
+
+
+
+
+
+
+
+/* Define how each icon button should look like */
+
+
+
+
+
+.q-med-text{
+	text-decoration: none;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.no-border-fieldset .ui-widget-content{
+	border:none;
+}
+
+.q-order-tab li {
+	padding: 0px 0px 0px 0 !important;
+	border-bottom: none !important;
+}
+
+.cart-section {
+	height: 100%;
+}
+
+
+
+.column-100{
+	width: 100px;
+}
+
+.column-300{
+	width: 400;
+}
+
+.column-400{
+	width: 400;
+}
+
+.q-vertical-line {
+	background: #a8a8a8;
+	border: none;
+	width: 1px;
+	height: 10p0x;
+	margin: 4px 6px 0;
+	box-shadow: none;
+}
+
+.q-order-new {
+	color: #000 !important;
+	background-color: #f1f1f1 !important;
+}
+
+.q-order-under-review {
+	color: #000 !important;
+	background-color: #e1e1e1 !important;
+}
+
+.q-order-submitted {
+	color: #fff !important;
+	background-color: #00004c !important;
+}
+
+.ui-menu {
+	height: initial !important;
+}
+
+
+
+.q-btn {
+	color: #fff;
+	background-color: #FF8C00;
+	width: 100%;
+}
+
+.q-btn-orange {
+	color: #fff;
+	background-color: #FF8C00;
+	width: 100%;
+}
+
+.q-btn-vendor {
+	color: #fff;
+	background-color: #00aced;
+	width: 100%;
+}
+
+.q-page-wrapper {
+	height: 100%;
+	position: relative;
+}
+
+.q-left-column {/*
+085ca8
+*/
+	background-color: #085ca8;
+	position: absolute;
+	/* <-- fixes the left panel to prevent from scrolling */
+	width: 235px;
+	min-height: 100%;
+	height: 100%;
+	color: #fff;
+}
+
+
+
+.q-top-small {
+	background-color: #085ca8;
+	position: absolute;
+	color: #fff;
+	width: 100%;
+	height: 50px;
+}
+
+
+
+.q-right-column {
+	margin-left: 235px;
+	min-height: 100%;
+	/* <-- fixes the background-color issue when content grows */
+}
+
+.q-right-content {
+	padding-top: 30px;
+	margin-top: 50px;
+}
+
+/* Shared */
+.q-loginBtn {
+	box-sizing: border-box;
+	position: relative;
+	/* width: 13em;  - apply for fixed size */
+	margin: 0.2em;
+	padding: 0 15px 0 46px;
+	border: none;
+	text-align: left;
+	line-height: 34px;
+	white-space: nowrap;
+	font-size: 16px;
+	color: #FFF;
+}
+
+.q-loginBtn:before {
+	content: "";
+	box-sizing: border-box;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+}
+
+.q-loginBtn:focus {
+	outline: none;
+}
+
+.q-loginBtn:active {
+	box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Facebook */
+.q-loginBtn--facebook {
+	width: 100%;
+	background-color: #4C69BA;
+	background-image: linear-gradient(#4C69BA, #3B55A0);
+	/*font-family: "Helvetica neue", Helvetica Neue, Helvetica, Arial, sans-serif;*/
+	text-shadow: 0 -1px 0 #354C8C;
+}
+
+.lq-loginBtn--facebook:before {
+	border-right: #364e92 1px solid;
+	background:
+		url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_facebook.png')
+		6px 6px no-repeat;
+}
+
+/* Email */
+.q-loginBtn--email {
+	width: 100%;
+	color: #DD4B39;
+	background: #EEE;
+	/*border: #BB3F30 1px solid;*/
+}
+
+.q-loginBtn--email:before {
+	border-right: #BB3F30 1px solid;
+	background:
+		url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png')
+		6px 6px no-repeat;
+}
+
+/* Google */
+.q-loginBtn--google {
+	width: 100%;
+	/*font-family: "Roboto", Roboto, arial, sans-serif;*/
+	background: #DD4B39;
+}
+
+.q-loginBtn--google:before {
+	border-right: #BB3F30 1px solid;
+	background:
+		url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png')
+		6px 6px no-repeat;
+}
+
+.q-loginBtn--twitter {
+	width: 100%;
+	background: #00aced;
+}
+
+h5 {
+	font-weight: bold;
+}
+
+
+
+/*steps*/
+
+.ui-steps .ui-steps-item {
+    width: 16%;
+}
+ 
+.ui-state-highlight {
+    text-shadow: none !important;
+}
+
+.ui-steps.ui-widget{
+	height: initial!important;
+    padding: 0;
+    margin: 0;
+}
+ 
+.ui-steps.custom {
+    margin-bottom: 50px;
+}
+ 
+.ui-steps.custom .ui-steps-item .ui-menuitem-link {
+    height: 10px;
+    padding: 0 1em;
+}
+ 
+.ui-steps.custom .ui-steps-item .ui-steps-number {
+    background-color: #0081c2!important;
+    color: #FFFFFF;
+    display: inline-block;
+    width: 30px;
+    height: 45px;
+    border-radius: 10px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+ 
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
+	    background: #aaaaaa!important;
+} 
+ 
+.ui-steps.custom .ui-steps-item.ui-state-highlight .ui-steps-title {
+    color: #555;
+}
+
+.ui-datagrid.ui-widget{
+	height:initial!important;
+}
+
+
+

@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:o="http://omnifaces.org/ui">
+
+<h:head>
+	<title>#{lex.title}</title>
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Raleway" />
+	<meta charset="UTF-8" name="viewport"
+		content="width=device-width, initial-scale=1" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="description" content="#{lex.metaDesc}" />
+	<link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}" />
+	<h:outputStylesheet library="css" name="bootstrap.css" />
+	<h:outputStylesheet library="css" name="style.css" />
+	<h:outputStylesheet library="css" name="page.css" />
+	<h:outputStylesheet library="css" name="hover.css" />
+	<h:outputStylesheet library="css" name="bootstrap-rtl.css" />
+	<h:outputScript library="js" name="bootstrap.min.js" />
+	<h:outputScript library="js" name="qit3.js" />
+	<h:outputScript library="js" name="jsf-fix.js" />
+</h:head>
+<h:body>
+	<ui:include src="/_includes/_customer_google_tag" />
+	<f:view>
+		<ui:include src="/_includes/_customer_top" />
+		<h:form>
+			<h:outputText
+				value="#{activityMonitorBean.addToActivity('visited add-to-cart page')}" />
+		</h:form>
+		<section id="account">
+		<div class="container">
+			<div class="row">
+				<ui:include src="/_includes/_customer_menu_bar" />
+			</div>
+		</div>
+		</section>
+
+		<section id="page">
+		<div class="container">
+			<div class="row3">
+				<div class="col-lg-12 col-xs-12" align="center">
+					<div class="paragraph-title">عنوان الشحن</div>
+				</div>
+
+
+				<o:form id="form-3" includeViewParams="true">
+					<div class="row">
+						<div class="col-xs-12">
+							<h:panelGroup rendered="#{loginBean.loginObject.customer.addresses.size() eq 0}">
+								<div class="col-md-4 col-md-offset-4 col-xs-12">
+									<div>لا توجد عناوين سابقة</div>
+								</div>
+								<br/>
+							</h:panelGroup>
+						</div>
+					</div>
+				</o:form>
+
+				<o:form id="form-2" includeViewParams="true">
+					<div class="row">
+						<div class="col-xs-12">
+							<h:panelGroup rendered="#{loginBean.loginObject.customer.addresses.size() gt 0}">
+								<div class="row">
+									<div class="col-md-8 col-md-offset-2 col-xs-12">
+										<div class="paragraph-title">عناوين سابقة</div>
+									</div>
+								</div>
+								<ui:repeat value="#{loginBean.loginObject.customer.addresses}" var="address">
+									<div class="row">
+										<div class="col-md-4 col-md-offset-2 col-xs-8">
+											<h:outputText value="#{address.line1} ,"/>
+											<h:outputText value="#{address.line2} ,"/>
+											<h:outputText value="#{countryBean.getRegionFromId(countryBean.getCityFromId(address.cityId).regionId).nameAr} -  "/>
+											<h:outputText value="#{countryBean.getCityFromId(address.cityId).nameAr}"/>
+										</div>
+										<div class="col-xs-4">
+											<h:commandButton styleClass="btn btn-primary hvr-push"
+															 value="اختر العنوان" actionListener="#{selectAddressBean.selectAddress(address)}">
+											</h:commandButton>
+										</div>
+										<br/>
+										<br/>
+									</div>
+								</ui:repeat>
+								<br/>
+							</h:panelGroup>
+						</div>
+					</div>
+				</o:form>
+
+				<o:form id="form-4" includeViewParams="true">
+					<div class="row">
+						<div class="col-xs-12">
+							<h:panelGroup >
+								<div class="col-md-8 col-md-offset-2 col-xs-12">
+									<div class="paragraph-title">
+									<h:selectBooleanCheckbox value="#{selectAddressBean.newAddress}">
+										<f:ajax execute="@this" render=":form-1"/>
+									</h:selectBooleanCheckbox>إضافة عنوان جديد</div>
+								</div>
+								<br/>
+							</h:panelGroup>
+						</div>
+					</div>
+				</o:form>
+
+				<div id="add-to-cart-table">
+					<o:form id="form-1" includeViewParams="true">
+						<h:panelGroup rendered="#{selectAddressBean.newAddress}">
+						<div class="row">
+								<div class="col-md-8 col-md-offset-2 col-xs-12">
+									<h:outputText value="#{lex.address}" style="font-size: 12px; color: #bbbbbb" />
+								</div>
+								<div class="col-md-4 col-md-offset-2 col-xs-12">
+									<h:inputText styleClass="form-control" id="address1" value="#{selectAddressBean.address.line1}"/>
+								</div>
+								<div class="col-md-8 col-md-offset-2 col-xs-12">
+									<h:outputText value="#{lex.address2}" style="font-size: 12px; color: #aaaaaa" />
+								</div>
+								<div class="col-md-4 col-md-offset-2 col-xs-12">
+									<h:inputText id="address2" styleClass="form-control" value="#{selectAddressBean.address.line2}"/>
+								</div>
+								<div class="col-md-8 col-md-offset-2 col-xs-12">
+									<h:outputText value="#{lex.region}" style="font-size: 12px; color: #aaaaaa" />
+								</div>
+								<div class="col-md-4 col-md-offset-2 col-xs-12">
+									<h:selectOneMenu id="region" styleClass="form-control"
+													 value="#{selectAddressBean.selectedRegionId}" required="true">
+										<f:selectItem noSelectionOption="true" itemLabel="#{lex.selectRegion}" />
+										<f:selectItems
+												value="#{selectAddressBean.customerCountry.regions}" var="region"
+												itemValue="#{region.id}" itemLabel="#{region.nameAr}" />
+										<f:ajax listener="#{selectAddressBean.chooseRegion()}"
+												execute="@this" render="city-panel" />
+									</h:selectOneMenu>
+								</div>
+								<h:panelGroup id="city-panel">
+									<h:panelGroup rendered="#{selectAddressBean.selectedRegionId gt 0}">
+										<div class="col-md-8 col-md-offset-2 col-xs-12">
+											<h:outputText value="#{lex.city}" style="font-size: 12px; color: #aaaaaa" />
+										</div>
+										<div class="col-md-4 col-md-offset-2 col-xs-12">
+											<h:selectOneMenu id="city" styleClass="form-control" value="#{selectAddressBean.address.cityId}" required="true">
+												<f:selectItems value="#{selectAddressBean.selectedRegion.cities}" var="city" itemValue="#{city.id}" itemLabel="#{city.nameAr}" />
+												<f:ajax />
+											</h:selectOneMenu>
+										</div>
+									</h:panelGroup>
+								</h:panelGroup>
+								<div class="col-md-8 col-md-offset-2 col-xs-12">
+									<br/>
+									<h:commandButton styleClass="btn btn-primary hvr-push"
+									value="إنشاء عنوان" actionListener="#{selectAddressBean.createAddress()}"/>
+								</div>
+							</div>
+						</h:panelGroup>
+					</o:form>
+				</div>
+			</div>
+		</div>
+		</section>
+
+
+		<footer>
+			<ui:include src="/_includes/customer_footer" />
+		</footer>
+
+		<div class="w3-container">
+			<p:ajaxStatus onstart="PF('statusDialog').show()"
+				onsuccess="PF('statusDialog').hide()" />
+			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+				closable="false" resizable="false" showHeader="false">
+				<p:graphicImage name="/images/ajax-loader.gif" />
+			</p:dialog>
+		</div>
+	</f:view>
+</h:body>
+</html>
