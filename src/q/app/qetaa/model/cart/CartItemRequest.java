@@ -20,9 +20,14 @@ public class CartItemRequest {
     @JsonIgnore
     public double getDiscountValue(){
         if(discount != null){
-            return salesPrice * (discount.getPercentage()/100);
+            return salesPrice * (discount.getPercentage());
         }
         return 0;
+    }
+
+    @JsonIgnore
+    public double getSalesPriceAfterDiscount(){
+        return salesPrice - getDiscountValue();
     }
 
 

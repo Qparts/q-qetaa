@@ -49,6 +49,9 @@ public class CartBean implements Serializable {
         cartRequest.setDeliveryCharges(35);
         cartRequest.setCustomerId(loginBean.getLoginObject().getCustomer().getId());
         paymentMethod = 'N';
+        havePromo = false;
+        promoVerified =false;
+        promoCodeQuery = "";
     }
 
     public void checkStage() {
@@ -72,7 +75,7 @@ public class CartBean implements Serializable {
             }
             else{
                 for(var cartItem : cartRequest.getCartItems()){
-                    if(cartItem.getDiscountId() != null){
+                    if(cartItem.getDiscountId() == null){
                         cartItem.setDiscount(discount);
                         cartItem.setDiscountId(discount.getId());
                     }
@@ -122,7 +125,6 @@ public class CartBean implements Serializable {
 
     private void makeCreditCardRequest() {
         Response r = reqs.postSecuredRequest(AppConstants.POST_CART_CREDIT_CARD, cartRequest);
-        System.out.println(r.getStatus());
         if (r.getStatus() == 202) {
             monitorBean.addToActivity("redirecting to payment page");
             cartRequestResponse = r.readEntity(CartRequestResponse.class);
@@ -143,7 +145,6 @@ public class CartBean implements Serializable {
 
     private void makeWireTransferRequest() {
         Response r = reqs.postSecuredRequest(AppConstants.POST_CART_WIRE_TRANSFER, cartRequest);
-        System.out.println(r.getStatus());
         if (r.getStatus() == 200) {
             monitorBean.addToActivity("successful wire transfer request");
             cartRequestResponse = r.readEntity(CartRequestResponse.class);

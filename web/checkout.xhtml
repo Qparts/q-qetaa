@@ -50,10 +50,6 @@
 			<div class="container">
 				<h:panelGroup rendered="#{cartBean.stage eq 3}">
 					<div class="row3">
-					<div class="col-lg-12 col-xs-12" align="center">
-						<div class="paragraph-title">إتمام الشراء</div>
-					</div>
-
 					<o:form id="form-3" styleClass="form-inline" includeViewParams="true">
 						<div align="center" class="col-md-6 col-md-offset-3 col-xs-12 ">
 							<h:outputText
@@ -63,20 +59,71 @@
 							<p:messages id="msgs" />
 						</div>
 
+
+						<h:panelGroup id="products-table-panel">
+							<div class="col-lg-12 col-xs-12" align="center">
+								<div class="paragraph-title">معلومات القطع</div>
+							</div>
+							<div id="products-table">
+								<div class="col-md-8 col-md-offset-2 col-xs-12">
+									<table class="table table-striped  table-hover table-condensed">
+										<thead class="table-bordered">
+											<tr>
+												<th>القطعة</th>
+												<th>الماركة</th>
+												<th>#{lex.quantity}</th>
+												<th>السعر</th>
+												<th>الخصم</th>
+												<th>إجمالي</th>
+											</tr>
+										</thead>
+										<tbody>
+											<ui:repeat var="item" value="#{cartBean.cartRequest.cartItems}">
+												<tr>
+													<td>#{item.publicProduct.desc}
+														<br/>#{item.publicProduct.descAr} </td>
+													<td>#{item.publicProduct.brand.nameAr}</td>
+													<td>#{item.quantity}</td>
+													<td>
+														<h:outputText value="#{item.salesPrice}" id="unit-price">
+															<f:convertNumber currencySymbol="" locale="en_US"   type="currency" />
+														</h:outputText>
+													</td>
+													<td>
+														<h:outputText value="#{item.discountValue}" id="unit-discount" style="color:#cc4f1d">
+															<f:convertNumber currencySymbol="" locale="en_US"   type="currency" />
+														</h:outputText>
+													</td>
+													<td>
+														<h:outputText id="total-product-price-after-discount" value="#{item.quantity * item.salesPriceAfterDiscount}">
+															<f:convertNumber currencySymbol="" type="currency" locale="en_US"  />
+														</h:outputText>
+													</td>
+												</tr>
+											</ui:repeat>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+
+						</h:panelGroup>
+
 						<h:panelGroup id="price-panel">
-							<div align="center" class="col-lg-12 col-md-12 col-xs-12">
-								<div
-										class="col-lg-2 col-lg-offset-3 col-md-2 col-md-offset-3 col-xs-6 table-bordered">
+							<div class="col-lg-12 col-xs-12" align="center">
+								<div class="paragraph-title">إتمام الشراء</div>
+							</div>
+							<div align="center" class="col-xs-12">
+								<div class="col-lg-3 col-lg-offset-3 col-xs-6 table-bordered">
 									<p style="font-size: 12px; color: #aaaaaa">#{lex.totalParts}</p>
 									<p>
-										<h:outputText value="#{cartBean.cartRequest.totalProducts}"
-													  style="font-weight: 600;color: #888">
+										<h:outputText value="#{cartBean.cartRequest.totalProducts}" style="font-weight: 600;color: #888;}">
 											<f:convertNumber type="currency" currencySymbol="SR "
 															 locale="en_US" />
 										</h:outputText>
 									</p>
 								</div>
-								<div class="col-lg-2 col-md-2 col-xs-6 table-bordered">
+								<div class="col-md-3 col-xs-6 table-bordered">
 									<p style="font-size: 12px; color: #aaaaaa">#{lex.deliveryFees}</p>
 									<p>
 										<h:outputText value="#{cartBean.cartRequest.deliveryCharges}"
@@ -86,53 +133,44 @@
 										</h:outputText>
 									</p>
 								</div>
-								<div class="col-lg-2 col-md-2 col-xs-12 table-bordered">
-									<p style="font-size: 12px; color: #aaaaaa">#{lex.vat}</p>
-									<p>
-										<h:outputText
-												value="#{cartBean.cartRequest.totalVat}"
-												style="font-weight: 600;color: #888" id="vat">
-											<f:convertNumber type="currency" currencySymbol="SR "
-															 locale="en_US" />
-										</h:outputText>
-									</p>
-								</div>
 								<div class="col-md-6 col-md-offset-3 col-xs-12 table-bordered">
-									<h:outputText value="#{lex.total}" style="font-size: 12px; color: #aaaaaa" />
-									<br />
-									<h:outputText id="total-price" style="color: #{partssOrderBean.cart.promoCodeObject.discountPromo ? '#aaa;text-decoration: line-through' : '#cc4f1d'}; font-weight: 600; font-size: 20px"
-												  value="#{cartBean.cartRequest.grandTotal}">
-										<f:convertNumber type="currency" currencySymbol="SR "
-														 locale="en_US" />
-									</h:outputText>
-									<br /> <br />
 									<h:panelGroup id="promo-price">
-										<h:panelGroup
-												rendered="#{cartBean.promoVerified and cartBean.cartRequest.discount.discountType eq 'P'}">
-											<h:outputText value="#{lex.promoDiscount}"
-														  style="font-size: 12px; color: #aaaaaa" />
+										<h:panelGroup layout="block" style="padding-bottom: 10px;">
+											<h:outputText value="الإجمالي قبل الخصم و الضريبة" style="font-size: 12px; color: #aaaaaa;font-weight: 900;" />
 											<br />
-											<h:outputText
-													value="#{cartBean.cartRequest.totalDiscount}"
-													style="color:#cc4f1d">
-												<f:convertNumber currencySymbol="SR " type="currency" />
+											<h:outputText id="total-price" style="color:#aaa;"
+														  value="#{cartBean.cartRequest.subTotal}">
+												<f:convertNumber type="currency" currencySymbol="SR "
+																 locale="en_US" />
 											</h:outputText>
+										</h:panelGroup>
+										<h:panelGroup layout="block" style="padding-bottom: 10px;">
+											<h:outputText value="الخصم" style="font-size: 12px; color: #aaa;font-weight: 900;" />
 											<br />
+											<h:outputText value="#{cartBean.cartRequest.totalDiscount}" style="color:#cc4f1d">
+												<f:convertNumber currencySymbol="SR " type="currency" locale="en_US" />
+											</h:outputText>
+										</h:panelGroup>
+										<h:panelGroup layout="block" style="padding-bottom: 10px;">
+											<h:outputText value="مجموع الضريبة" style="font-size: 12px; color: #aaa;font-weight: 900;" />
 											<br />
-											<h:outputText value="#{lex.totalPriceAfterDiscount}"
-														  style="font-size: 12px; color: #aaaaaa" />
+											<h:outputText id="total-vat" value="#{cartBean.cartRequest.totalVatAfterDiscount}" style="color:#aaa;">
+												<f:convertNumber type="currency" currencySymbol="SR " locale="en_US" />
+											</h:outputText>
+										</h:panelGroup>
+										<h:panelGroup layout="block" style="padding-bottom: 10px;">
+											<h:outputText value="الإجمالي" style="font-size: 12px; color: #aaa;font-weight: 900;" />
 											<p style="font-size: 20px;">
 												<h:outputText style="color: #cc4f1d; font-weight: 600;"
 															  id="total-price-promo"
-															  value="#{((partsOrderBsean.deliveryCharges * partsOrdesrBean.cart.vatPercentage) + (partsOrdersBean.partOrder.newTotalPrice * partsOrderBsean.cart.vatPercentage) + partssOrderBean.deliveryCharges + psartsOrderBean.partOrder.newTotalPrice) - partsOrdserBean.cart.promoCodeObject.discountPercentage * partsOrdersBean.deliveryCharges - partsOrsderBean.cart.promoCodeObject.discountPercentage * partsOsrderBean.partOrder.newTotalPrice}">
+															  value="#{cartBean.cartRequest.grandTotalAfterDiscount}">
 													<f:convertNumber type="currency" currencySymbol="SR "
 																	 locale="en_US" />
 												</h:outputText>
 											</p>
 										</h:panelGroup>
-
-
 									</h:panelGroup>
+									<br /> <br />
 
 
 									<div>
@@ -155,7 +193,7 @@
 														actionListener="#{cartBean.verifyPromoCode()}"
 														value="#{lex.promCodeVerify}"
 														rendered="#{not cartBean.promoVerified}">
-													<f:ajax execute="in @this" render="promo-panel promo-question promo-price total-price msgs"/>
+													<f:ajax execute="in @this" render="price-panel products-table-panel msgs"/>
 												</h:commandLink>
 												<br />
 											</h:panelGroup>
@@ -172,7 +210,7 @@
 						<div class="col-xs-12">
 							<div class="row">
 								<div class="col-xs-12" align="center">
-									<div class="paragraph-title">إتمام الشراء</div>
+									<div class="paragraph-title">#{lex.address}</div>
 								</div>
 								<div class="col-md-4 col-md-offset-4 col-xs-12">
 									<h:outputText value="#{cartBean.cartRequest.address.line1} ,"/>
@@ -263,7 +301,7 @@
 						<p>
 							<h:outputText value="#{lex.transferAmount}" />
 							<br />
-							<h:outputText value="#{cartBean.cartRequest.grandTotal}">
+							<h:outputText value="#{cartBean.cartRequest.grandTotalAfterDiscount}">
 								<f:convertNumber type="currency" currencySymbol="SR " locale="en_US"  />
 							</h:outputText>
 						</p>

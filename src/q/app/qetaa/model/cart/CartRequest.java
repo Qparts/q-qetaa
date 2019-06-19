@@ -1,7 +1,6 @@
 package q.app.qetaa.model.cart;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import q.app.qetaa.model.customer.PublicAddress;
 
 import java.io.Serializable;
@@ -38,6 +37,24 @@ public class CartRequest implements Serializable {
     }
 
     @JsonIgnore
+    public double getTotalProductsAfterDiscount(){
+        double total = 0;
+        for(CartItemRequest cartItem : cartItems){
+            total += cartItem.getSalesPriceAfterDiscount() * cartItem.getQuantity();
+        }
+        return total;
+    }
+
+    @JsonIgnore
+    public double getTotalProductsDiscountValue(){
+        double total = 0;
+        for(CartItemRequest cartItem : cartItems){
+            total += cartItem.getDiscountValue() * cartItem.getQuantity();
+        }
+        return total;
+    }
+
+    @JsonIgnore
     public double getTotalDiscount(){
         double total = 0;
         for(CartItemRequest cartItem : cartItems){
@@ -63,7 +80,7 @@ public class CartRequest implements Serializable {
      * @return a total before vat
      */
     @JsonIgnore
-    public double getNetTotal(){
+    public double getSubTotalAfterDiscount(){
         return getTotalProducts() + deliveryCharges - getTotalDiscount();
     }
 
@@ -73,8 +90,18 @@ public class CartRequest implements Serializable {
     }
 
     @JsonIgnore
+    public double getTotalVatAfterDiscount(){
+        return  getSubTotalAfterDiscount() * 0.05;
+    }
+
+    @JsonIgnore
     public double getGrandTotal(){
-        return getNetTotal() + getTotalVat();
+        return getSubTotal() + getTotalVat();
+    }
+
+    @JsonIgnore
+    public double getGrandTotalAfterDiscount(){
+        return getSubTotalAfterDiscount() + getTotalVatAfterDiscount();
     }
 
     public String getCcCvc() {

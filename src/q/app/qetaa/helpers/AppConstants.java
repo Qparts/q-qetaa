@@ -26,26 +26,10 @@ public class AppConstants {
 
 
 	//===============HOST=================//
-	//public final static String GIFTS_DIRECTORY_WINDOWS = "C:\\loyalty-gifts-pics\\";
-	//public final static String GIFTS_DIRECTORY_LINUX = "/home/ubuntu/loyalty-gifts-pics/";
-	//public final static String VIN_DIRECTORY_WINDOWS = "C:\\VIN-DIR\\";
-	//public final static String VIN_DIRECTORY_LINUX = "/home/ubuntu/VIN-DIR/";
-	public final static String SERVICE_HOST = "http://localhost:8081";
-
-	//private final static String OS = System.getProperty("os.name").toLowerCase();
-	
-//	public final static String APP_HOST = "http://localhost:8081/jsf";
-	//public final static String APP_HOST_UNSECURE = "http://localhost:8081/jsf";
-	//public final static String HOST_ESCAPED = "http%3A%2F%2Flocalhost:8081%2Fjsf%2F";
 	
 	//for server
 	public final static String APP_HOST = "https://www.qetaa.com/";
-	public final static String APP_HOST_UNSECURE = "http://www.qetaa.com/";
 	public final static String HOST_ESCAPED = "https://www.qetaa.com/";
-	
-	//===============SERVICES=================//
-	private final static String PAYMENT_SERVICE = SERVICE_HOST +"/service-qetaa-q.app.qetaa.payment/rest/";
-	private final static String PROMOTION_SERVICE = SERVICE_HOST + "/service-qetaa-q.app.qetaa.vendor/rest/promotion/";
 
 	//===============FACEBOOK=================//
 	public static final String FB_APP_ID = "156876888175917";
@@ -55,29 +39,12 @@ public class AppConstants {
 	public static final String FB_DIALOG_URL = "https://www.facebook.com/dialog/oauth?client_id="+FB_APP_ID+"&redirect_uri="+FB_REDIRECT_URL+"&scope="+FB_SCOPE;
 	public final static String PAGE_SUCCESSFUL = APP_HOST + "successful";
 	
-	//===============LOGIN AND REGISTERATION=================//
-
-
-
-
 
 	//===============VENDORS====================//
 	public final static String POST_JOIN_US = VENDOR_SERVICE + "vendor-join-request";
 	
-	//===============CARTS=================//
-	public final static String POST_CREATE_CART = CART_SERVICE + "q/app/qetaa/cart";
-	public final static String PUT_UPDATE_CART = CART_SERVICE + "q/app/qetaa/cart";
 
-	//===============PARTS=================//
-	public final static String POST_WIRE_TRASNFER = CART_SERVICE + "wire-transfer";
-
-	public final static String POST_PARTS_PAYMENT_FINALIZE = PAYMENT_SERVICE+ "save-successful-q.app.qetaa.payment/q.app.qetaa.customer";
-	
-	public final static String CUSTOMER_CREATE_PARTS_ORDER = CART_SERVICE + "parts-order";
-	public final static String POST_CREATE_PARTS_ORDER_CC = CART_SERVICE + "parts-order/credit-card";
-	public final static String POST_CREATE_PARTS_ORDER_COD = CART_SERVICE + "parts-order/cash-on-delivery";
-
-	
+	//===============HIT COUNTER=================//
 	public final static String POST_HIT_COUNTER = CUSTOMER_SERVICE + "hit";
 	public final static String POST_HIT_ACTIVITIES = CUSTOMER_SERVICE + "hit-activities";
 	public final static String GET_NEW_VISIT_INDEX = CUSTOMER_SERVICE + "new-visit-index";
@@ -86,48 +53,11 @@ public class AppConstants {
 	public final static String getCodeLogin(String code) {
 		return CUSTOMER_SERVICE + "code-login/code/"+code;
 	}
-	
-	public final static String getCountryCities(int countryId) {
-		return LOCATION_SERVICE + "active-cities-q.app.qetaa.customer/country/" + countryId;
-	}
-	
-	public final static String getCountryRegions(int countryId) {
-		return LOCATION_SERVICE + "active-region-cities-q.app.qetaa.customer/country/" + countryId;
-	}
-	
 
-	
-	public final static String getCustomerArchivedCarts(long customerId){
-		return CART_SERVICE + "q.app.qetaa.customer-past-carts/q.app.qetaa.customer/" + customerId;
-	}
-	
-	public final static String getModelYear(int modelYearId) {
-		return VEHICLE_SERVICE + "model-year/" + modelYearId;
-	}
-	
-	public final static String getCity(long cityId) {
-		return LOCATION_SERVICE + "city/" + cityId;
-	}
-	
-	public final static String getCustomerApprovedItems(long cartId){
-		return CART_SERVICE + "q.app.qetaa.customer-approved-items/q.app.qetaa.cart/" + cartId;
-	}
-	
-	public final static String getCustomerPartsApprovedITems(long cartId) {
-		return CART_SERVICE + "q.app.qetaa.customer-parts-approved-items/q.app.qetaa.cart/" + cartId;
-	}
-	
-	
-	public final static String getQuotationCart(long cartId, long customerId){
-		return CART_SERVICE + "quotation-q.app.qetaa.cart/" + cartId + "/q/app/qetaa/customer/" + customerId;
-	}
 
 	
 
 	
-	public final static String getPromoCode(long promoCodeId) {
-		return PROMOTION_SERVICE  + "promotion-code/" + promoCodeId;
-	}
 
 
 
@@ -150,14 +80,12 @@ public class AppConstants {
 		return PUBLIC_CART_SERVICE + "discount/promocode/" + code;
 	}
 
-
 	//////////// AWS CALLS /////////////////////////
 	public static final String AWS_REGION = "eu-central-1";
 
 
 	//////////// VEHICLE SERVICE CALLS /////////////
 	public final static String GET_ACTIVE_MAKES = PUBLIC_VEHICLE_SERVICE + "makes";
-
 
 	////////////// CUSTOMER SERVICE CALLS /////////
 	public final static String POST_EMAIL_LOGIN = PUBLIC_CUSTOMER_SERVICE + "login";
@@ -177,20 +105,15 @@ public class AppConstants {
 	//////////// QUOTATION SERVICE CALLS /////////////
 	public final static String POST_CREATE_QUOTATION = PUBLIC_QUOTATION_SERVICE + "quotation";
 	public final static String PUT_CLOSE_QUOTATION = PUBLIC_QUOTATION_SERVICE + "close-quotation";
-
-
 	public final static String getQuotation(long quotationId) {
 		return PUBLIC_QUOTATION_SERVICE + "quotation/" + quotationId;
 	}
-
 	public final static String getPendingQuotations(long customerId){
 		return PUBLIC_QUOTATION_SERVICE + "quotations/customer/" + customerId + "/pending";
 	}
-
 	public final static String getClosedQuotations(long customerId){
 		return PUBLIC_QUOTATION_SERVICE + "quotations/customer/" + customerId + "/closed";
 	}
-
 	public final static String getCompletedQuotations(long customerId){
 		return PUBLIC_QUOTATION_SERVICE + "quotations/customer/" + customerId + "/completed";
 	}
