@@ -289,7 +289,7 @@ public class LoginBean implements Serializable {
         Response r2 = reqs.postSecuredRequest(AppConstants.POST_EMAIL_LOGIN, map, null, 0);
         System.out.println(r2.getStatus());
         if(r2.getStatus() ==200){
-            System.out.println(r.readEntity(String.class));
+            System.out.println(r2.readEntity(String.class));
         }
         if (r.getStatus() == 200) {
             this.loginObject = r.readEntity(LoginObject.class);
