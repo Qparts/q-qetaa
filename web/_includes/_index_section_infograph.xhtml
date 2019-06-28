@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 text-center">
+				<h4 class="title-box">
+					<i class="fa fa-bars" aria-hidden="true" />#{lex.orderSteps}
+				</h4>
+				<h:form>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 step-box">
+						<div class="step-icon  hvr-shrink">
+							<p:commandLink oncomplete="showModal3()"
+										   action="#{createQuotationBean.clickOrderButton('step 1', createQuotationBean.step)}">
+								<h:graphicImage value="/resources/images/step1.png"
+												rendered="true" styleClass="img-responsive" />
+							</p:commandLink>
+						</div>
+						<h3>#{lex.step1Title}</h3>
+						<p>#{lex.step1Text}</p>
+					</div>
+
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 step-box">
+						<div class="step-icon hvr-shrink">
+							<p:commandLink oncomplete="showModal3()"
+										   action="#{createQuotationBean.clickOrderButton('step 2',createQuotationBean.step)}">
+								<h:graphicImage value="/resources/images/step2.png"
+												rendered="true" styleClass="img-responsive" />
+							</p:commandLink>
+						</div>
+						<h3>#{lex.step2Title}</h3>
+						<p>#{lex.step2Text}</p>
+					</div>
+
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 step-box">
+						<div class="step-icon  hvr-shrink">
+							<p:commandLink oncomplete="showModal3()"
+										   action="#{createQuotationBean.clickOrderButton('step 3',createQuotationBean.step)}">
+								<h:graphicImage value="/resources/images/step3.png"
+												rendered="true" styleClass="img-responsive" />
+							</p:commandLink>
+						</div>
+						<h3>#{lex.step3Title}</h3>
+						<p>#{lex.step3Text}</p>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 step-box">
+						<div class="step-icon hvr-shrink">
+							<p:commandLink oncomplete="showModal3()"
+										   action="#{createQuotationBean.clickOrderButton('step 4',createQuotationBean.step)}">
+								<h:graphicImage value="/resources/images/step4.png"
+												rendered="true" styleClass="img-responsive" />
+							</p:commandLink>
+						</div>
+						<h3>#{lex.step4Title}</h3>
+						<p>#{lex.step4Text}</p>
+					</div>
+				</h:form>
+			</div>
+		</div>
+	</div>
+</ui:composition>

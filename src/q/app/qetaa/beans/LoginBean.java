@@ -121,47 +121,35 @@ public class LoginBean implements Serializable {
     }
 
     public void checkCodeLogin() {
-        monitorBean.addToActivity("login from code");
-        String code = Helper.getParam("c");
-        Response r = reqs.getSecuredRequest(AppConstants.getCodeLogin(code));
-        if (r.getStatus() == 200) {
-            monitorBean.addToActivity("successful code");
-            this.loginObject = r.readEntity(LoginObject.class);
-            this.loginStatus = 'A';
-            saveCookie();
-            doLogin();
-            //check q.app.qetaa.cart status
-            char c = getCartStatus();
-            String link = "";
-            switch(c) {
-                case 'N':
-                case 'Q':
-                case 'W':
-                case 'R':
-                case 'A':
-                case 'S':
-                    link = "/my_orders";
-                    break;
-                default:
-                    link = "/past_orders";
-
+        try{
+            monitorBean.addToActivity("login from code");
+            String code = Helper.getParam("c");
+            String email = Helper.getParam("e");
+            String quotationId = Helper.getParam("q");
+            Map<String,Object> map = new HashMap<>();
+            map.put("code", code);
+            map.put("email", email);
+            Response r = reqs.postSecuredRequest(AppConstants.POST_CODE_LOGIN, map, null, 0);
+            System.out.println(r.getStatus() + " " + AppConstants.POST_CODE_LOGIN);
+            if (r.getStatus() == 200) {
+                monitorBean.addToActivity("successful code");
+                this.loginObject = r.readEntity(LoginObject.class);
+                this.loginStatus = 'A';
+                //saveCookie();
+                doLogin();
+                //check q.app.qetaa.cart status
+                String anchor = "#c" +quotationId;
+                Helper.redirect("/quotations" + anchor);
+            } else {
+                monitorBean.addToActivity("invalid code login");
+                throw new Exception();
             }
-            String anchor = "#c" +loginObject.getCartId();
-            Helper.redirect(link + anchor);
-        } else {
-            monitorBean.addToActivity("invalid code login");
+        }catch (Exception ex){
             Helper.redirect("/index");
         }
     }
 
-    private char getCartStatus() {
-        Response r = reqs.getSecuredRequest(AppConstants.getQuotation(loginObject.getCartId()));
-        if(r.getStatus() == 200) {
-            PublicQuotation quotation = r.readEntity(PublicQuotation.class);
-            return 'S';
-        }
-        return 'W';
-    }
+
 
     public void chooseEmailRegistration() {
         monitorBean.addToActivity("chose email registration");

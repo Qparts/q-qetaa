@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 
 import org.primefaces.PrimeFaces;
 import q.app.qetaa.helpers.*;
+import q.app.qetaa.model.customer.PublicVehicle;
 import q.app.qetaa.model.location.PublicCountry;
 import q.app.qetaa.model.location.PublicRegion;
 import q.app.qetaa.model.quotation.CreateQuotationItemRequest;
@@ -32,6 +33,8 @@ public class CreateQuotationBean implements Serializable {
 	private CreateQuotationRequest quotationRequest;
 	private List<PublicMake> makes;
 	private int step;
+	private PublicVehicle selectedPublicVehicle;
+	private long selectedPublicVehicleId;
 	private PublicMake selectedMake;
 	private PublicModel selectedModel;
 	private PublicModelYear selectedModelYear;
@@ -76,19 +79,35 @@ public class CreateQuotationBean implements Serializable {
 		this.selectedModel = null;
 	}
 
+	public String getVin(){
+		if(this.selectedPublicVehicle != null){
+			return selectedPublicVehicle.getVin();
+		}
+		else{
+			return this.quotationRequest.getVin();
+		}
+	}
+
 	public String getFullVehicleName() {
 		String s = "";
 		switch (step) {
 		case 1:
-			s = s + this.selectedMake.getNameAr();
+			s += this.selectedMake.getNameAr();
 			break;
 		case 2:
-			s = s + this.selectedMake.getNameAr() + " - " + this.selectedModel.getNameAr();
+			s += this.selectedMake.getNameAr() + " - " + this.selectedModel.getNameAr();
 			break;
 		case 3:
 		case 4:
 		case 5:
-			s = s + this.selectedMake.getNameAr() + " - " + this.selectedModel.getNameAr() + " - " + this.yearNumber;
+			if(this.selectedPublicVehicle != null){
+				s += selectedPublicVehicle.getVehicle().getFullName();
+			}
+			else{
+				s += this.selectedMake.getNameAr() + " - " + this.selectedModel.getNameAr() + " - " + this.yearNumber;
+			}
+			break;
+
 		}
 		return s;
 	}
@@ -123,7 +142,14 @@ public class CreateQuotationBean implements Serializable {
 		monitorBean.addToActivity("chose city: " + quotationRequest.getCityId());
 		monitorBean.addToActivity("submitting order");
 		quotationRequest.setCustomerId(this.loginBean.getLoginObject().getCustomer().getId());
-		quotationRequest.setMakeId(this.selectedMake.getId());
+		if(selectedPublicVehicle != null){
+			quotationRequest.setCustomerVehicleId(selectedPublicVehicle.getId());
+			quotationRequest.setMakeId(this.selectedPublicVehicle.getVehicle().getMake().getId());
+			quotationRequest.setVin("");
+		}
+		else{
+			quotationRequest.setMakeId(this.selectedMake.getId());
+		}
 		if(this.vinImageUploaded) {
 			quotationRequest.setImageAttached(true);
 		}
@@ -139,7 +165,7 @@ public class CreateQuotationBean implements Serializable {
 			/// UPLOAD // //
 			CreateQuotationResponse qResponse =  r.readEntity(CreateQuotationResponse.class);
 			lastOrderId = qResponse.getQuotationId();
-			uploadVinImage();
+			uploadVinImage(qResponse.getVehicleImageName());
 			uploadItemsImages(qResponse);
 			PrimeFaces.current().executeScript("showCompleteDialog()");
 			monitorBean.addToActivity("successful order submitted: " + lastOrderId);
@@ -153,9 +179,10 @@ public class CreateQuotationBean implements Serializable {
 		}
 	}
 
-	private void uploadVinImage(){
+	private void uploadVinImage(String imageName){
 		if(this.vinImageUploaded) {
-			String fileName = lastOrderId + ".png";
+			String fileName = imageName + ".png";
+			quotationRequest.setImageString(vinBase64);
 			AWSClient.uploadImage(quotationRequest.getImageString(), fileName, SysProps.getValue("quotationBucketName"));
 			this.lastVinImage = true;
 		}
@@ -259,6 +286,7 @@ public class CreateQuotationBean implements Serializable {
 			this.step = 0;
 			this.selectedMake = null;
 			this.selectedModel = null;
+			this.selectedPublicVehicle = null;
 			this.quotationRequest.setVehicleYearId(null);
 			PrimeFaces.current().executeScript("resetActive(0, 'step-1');");
 			break;
@@ -290,6 +318,22 @@ public class CreateQuotationBean implements Serializable {
 			PrimeFaces.current().executeScript("resetActive(100, 'step-6');");
 			break;
 		}
+	}
+
+	public void choosePublicVehicle(PublicVehicle publicVehicle){
+		this.selectedPublicVehicle = publicVehicle;
+		this.selectedMake = publicVehicle.getVehicle().getMake();
+		this.selectedModel = publicVehicle.getVehicle().getModel();
+		PublicModelYear pmy = new PublicModelYear();
+		pmy.setId(publicVehicle.getVehicle().getId());
+		pmy.setMakeId(publicVehicle.getVehicle().getMake().getId());
+		pmy.setModelId(publicVehicle.getVehicle().getModel().getId());
+		pmy.setYear(publicVehicle.getVehicle().getYear());
+		this.selectedModelYear = pmy;
+		this.yearNumber = pmy.getYear();
+		this.quotationRequest.setVehicleYearId(publicVehicle.getVehicle().getId());
+		this.quotationRequest.setVin(publicVehicle.getVin());
+		this.step = 4;
 	}
 
 	public void chooseMake(PublicMake selectedMake) {
@@ -432,4 +476,20 @@ public class CreateQuotationBean implements Serializable {
 		return lastVinImage;
 	}
 
+
+	public PublicVehicle getSelectedPublicVehicle() {
+		return selectedPublicVehicle;
+	}
+
+	public void setSelectedPublicVehicle(PublicVehicle selectedPublicVehicle) {
+		this.selectedPublicVehicle = selectedPublicVehicle;
+	}
+
+	public long getSelectedPublicVehicleId() {
+		return selectedPublicVehicleId;
+	}
+
+	public void setSelectedPublicVehicleId(long selectedPublicVehicleId) {
+		this.selectedPublicVehicleId = selectedPublicVehicleId;
+	}
 }

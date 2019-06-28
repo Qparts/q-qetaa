@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<div class="row setup-content step hiddenStepInfo" id="step-5">
+		<p>#{lex.make}: #{createQuotationBean.fullVehicleName}</p>
+		<p>#{lex.vin}: #{createQuotationBean.vin}</p>
+		<div class="col-xs-12">
+			<div class="col-md-12 well text-center">
+				<p class="title-price">#{lex.addItems}</p>
+				<h:panelGroup id="table-holder">
+					<h:dataTable value="#{createQuotationBean.quotationRequest.quotationItems}"
+								 var="item" id="table" styleClass="table">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="#{lex.itemNameOrNum}" />
+							</f:facet>
+							<h:inputText styleClass="form-control"
+										 value="#{item.itemName}" required="true"
+										 requiredMessage="#{lex.itemNameReq}">
+								<f:ajax />
+							</h:inputText>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="#{lex.quantity}" />
+							</f:facet>
+							<h:selectOneMenu styleClass="q-form-control"
+											 value="#{item.quantity}">
+								<f:selectItems value="#{item.quantityArray}"
+											   var="var" itemValue="#{var}" itemLabel="#{var}" />
+								<f:ajax />
+							</h:selectOneMenu>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="#{lex.remove}" />
+							</f:facet>
+							<h:commandLink
+									actionListener="#{createQuotationBean.removeItem(item)}"
+									value="">
+								<span class="btn glyphicon glyphicon-trash" />
+								<f:ajax render=":form-1:table :form-1:table-holder"
+										execute="@this" />
+							</h:commandLink>
+						</h:column>
+					</h:dataTable>
+				</h:panelGroup>
+				<h:commandLink
+						actionListener="#{createQuotationBean.addItem('clicked add item')}"
+						value="أضف قطعة">
+					<span class="btn glyphicon glyphicon-plus" />
+					<f:ajax render=":form-1:table :form-1:item-msg"
+							execute="@this" />
+				</h:commandLink>
+				<br /> <br />
+				<div class="w3-padding-12">
+					<p:messages id="item-msg" />
+					<h:commandButton rendered="#{not (createQuotationBean.selectedPublicVehicle eq null)}"
+									 actionListener="#{createQuotationBean.resetToStep(0)}"
+									 value="#{lex.previous}" styleClass="btn">
+						<f:ajax execute="@this" render=":form-1:panel :form-1:step" />
+					</h:commandButton>
+					<h:commandButton rendered="#{createQuotationBean.selectedPublicVehicle eq null}"
+									 actionListener="#{createQuotationBean.resetToStep(3)}"
+									 value="#{lex.previous}" styleClass="btn">
+						<f:ajax execute="@this" render=":form-1:panel :form-1:step" />
+					</h:commandButton>
+					<h:commandButton
+							actionListener="#{createQuotationBean.verifyItems()}"
+							value="#{lex.next}" styleClass="btn">
+						<f:ajax execute="table" render="item-msg :form-1:step" />
+					</h:commandButton>
+				</div>
+			</div>
+		</div>
+	</div>
+</ui:composition>

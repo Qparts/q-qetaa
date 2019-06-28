@@ -34,18 +34,6 @@
 						class="fa fa-shopping-cart" style="color: red" /> #{lex.myOrders}
 					</a>
 				</div>
-				<div class="col-md-2 col-xs-6">
-					<a href="past_orders"> <i class="fa fa-shopping-cart"
-						style="color: red" /> #{lex.pastOrders}
-					</a>
-				</div>
-				<h:panelGroup rendered="false">
-				<div class="col-md-2 col-xs-6">
-					<a href="loyalty"> <i class="fa fa-gift"
-						style="color: red" /> #{lex.loyaltyProg}
-					</a>
-				</div>
-				</h:panelGroup>
 				<h:form id="logout-form">
 					<p:remoteCommand name="doLogout"
 						actionListener="#{loginBean.doLogout()}" style="display: none;" />

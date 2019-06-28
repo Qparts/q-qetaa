@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<div class="row setup-content step hiddenStepInfo" id="step-3">
+		<p>#{lex.make}: #{createQuotationBean.fullVehicleName}</p>
+		<div class="col-xs-12">
+			<div class="col-md-12 well text-center">
+				<p class="title-price">#{lex.selectYear}</p>
+				<p:dataGrid value="#{createQuotationBean.selectedModel.modelYears}"
+							var="modelYear">
+					<p:column>
+						<p:commandLink value="#{modelYear.year}" process="@this"
+									   actionListener="#{createQuotationBean.chooseModelYear(modelYear)}"
+									   update=":form-1:panel :form-1:step"
+									   oncomplete="resetActive(60, 'step-4');" />
+					</p:column>
+				</p:dataGrid>
+				<br />
+				<h:commandButton
+						actionListener="#{createQuotationBean.resetToStep(1)}"
+						value="#{lex.previous}" styleClass="btn">
+					<f:ajax execute="@this" render=":form-1:panel :form-1:step" />
+				</h:commandButton>
+			</div>
+		</div>
+	</div>
+
+</ui:composition>

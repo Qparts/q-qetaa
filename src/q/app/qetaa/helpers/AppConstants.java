@@ -5,7 +5,6 @@ public class AppConstants {
 
 	private final static String PUBLIC_QUOTATION_SERVICE = SysProps.getValue("quotationPublicService");
 
-	private final static String VEHICLE_SERVICE = SysProps.getValue("vehicleService");
 	private final static String PUBLIC_VEHICLE_SERVICE = SysProps.getValue("vehiclePublicService");
 
 	private final static String VENDOR_SERVICE = SysProps.getValue("vendorService");
@@ -16,10 +15,8 @@ public class AppConstants {
 	private final static String PRODUCT_SERVICE = SysProps.getValue("productService");
 	private final static String INVOICE_SERVICE = SysProps.getValue("invoiceService");
 
-	private final static String CART_SERVICE = SysProps.getValue("cartService");
 	private final static String PUBLIC_CART_SERVICE = SysProps.getValue("cartPublicService");
 
-	private final static String LOCATION_SERVICE = SysProps.getValue("locationService");
 	private final static String PUBLIC_LOCATION_SERVICE = SysProps.getValue("locationPublicService");
 
 	public final static String APP_SECRET = SysProps.getValue("appSecret");
@@ -48,11 +45,6 @@ public class AppConstants {
 	public final static String POST_HIT_COUNTER = CUSTOMER_SERVICE + "hit";
 	public final static String POST_HIT_ACTIVITIES = CUSTOMER_SERVICE + "hit-activities";
 	public final static String GET_NEW_VISIT_INDEX = CUSTOMER_SERVICE + "new-visit-index";
-	
-
-	public final static String getCodeLogin(String code) {
-		return CUSTOMER_SERVICE + "code-login/code/"+code;
-	}
 
 
 	
@@ -95,6 +87,7 @@ public class AppConstants {
 	public final static String POST_ADDRESS = PUBLIC_CUSTOMER_SERVICE + "address";
 	public final static String POST_RESET_PASSWORD_SMS = PUBLIC_CUSTOMER_SERVICE + "reset-password/sms";
 	public final static String PUT_RESET_PASSWORD = PUBLIC_CUSTOMER_SERVICE + "reset-password/sms";
+	public final static String POST_CODE_LOGIN = PUBLIC_CUSTOMER_SERVICE + "code-login";
 
 
 	//////////// LOCATION SERVICE CALLS ///////////

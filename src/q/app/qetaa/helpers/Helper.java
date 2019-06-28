@@ -2,6 +2,7 @@ package q.app.qetaa.helpers;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
@@ -23,8 +24,9 @@ public class Helper {
 	private static String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxuz1234567890";
 
 
-	public static byte[] base64ToByteArray(String name) throws UnsupportedEncodingException {
-		return Base64.getDecoder().decode(new String(name).getBytes("UTF-8"));
+	public static byte[] base64ToByteArray(String imageString){
+		return Base64.getMimeDecoder().decode(imageString.split(",")[1]);
+		//return Base64.getDecoder().decode(new String(name).getBytes(StandardCharsets.UTF_8));
 	}
 
 

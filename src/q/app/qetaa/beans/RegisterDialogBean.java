@@ -1,4 +1,4 @@
-package q.app.qetaa.customer;
+package q.app.qetaa.beans;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;

@@ -1,0 +1,116 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<div class="row setup-content step hiddenStepInfo" id="step-4">
+		<p>#{lex.make}: #{createQuotationBean.fullVehicleName}</p>
+		<div class="col-xs-12">
+			<div class="col-md-12 well text-center">
+				<p class="title-price">#{lex.enterVin}</p>
+				<p:tooltip id="toolTipWhyVin" for="whyvin" position="top"
+						   styleClass="whyvin-image">
+					<p:graphicImage name="images/why-vin.png"
+									styleClass="whyvin-image" />
+				</p:tooltip>
+				<h:outputLink id="whyvin" value="#">
+					<h:outputText value="لماذا نطلب رقم الهيكل؟" />
+				</h:outputLink>
+				<br />
+				<div>
+					<h:panelGroup id="vin-panel">
+						<h:panelGroup
+								rendered="#{(not createQuotationBean.quotationRequest.imageAttached) and (createQuotationBean.vinBase64.length() eq 0)}">
+							<p:tooltip id="toolTipContent" for="content"
+									   rendered="true" position="top" styleClass="reg-image">
+								<p:graphicImage name="images/reg.jpg"
+												styleClass="reg-image" />
+							</p:tooltip>
+							<h:outputLink id="content" value="#" rendered="true">
+								<i class="fa fa-question-circle" style="font-size: 15px;"/>
+							</h:outputLink>
+
+							<h:inputText id="vin" value="#{createQuotationBean.quotationRequest.vin}"
+										 required="true" requiredMessage="#{lex.enterVinReq}"
+										 validatorMessage="#{lex.invalidVin2}"
+										 a:placeHolder="#{lex.vin}" a:maxlength="17"
+										 styleClass="form-control"
+										 style="width:230px;text-transform: uppercase;margin: auto;">
+								<f:validateRegex pattern="^[a-zA-Z0-9]*$"/>
+							</h:inputText>
+						</h:panelGroup>
+					</h:panelGroup>
+				</div>
+				<h:panelGroup id="image-panel">
+					<h:panelGroup rendered="#{not createQuotationBean.quotationRequest.imageAttached}">
+						<div>
+							<br />
+							<h:outputText value="#{lex.orAdd}" />
+						</div>
+						<div onclick="replaceButton('form-1:vin-img')">
+							<h:outputLink value="#">#{lex.addVinImage}</h:outputLink>
+						</div>
+						<br />
+						<h:inputFile style="display:none;" id="vin-img"
+									 label="#{lex.VIUpload}"
+									 onchange="handleFileSelect(this, 'form-1:img1', 'form-1:imgstring1' , 'form-1:hidden-btn');">
+						</h:inputFile>
+						<h:graphicImage id="img1" value="#{createQuotationBean.vinBase64}"
+										style="width:40%;visibility:#{createQuotationBean.vinBase64.length() gt 0 ? visible : hidden}" />
+						<h:inputText value="#{createQuotationBean.vinBase64}"
+									 id="imgstring1" style="display:none">
+						</h:inputText>
+						<br />
+						<h:panelGroup id="delete-image-panel">
+							<p:commandLink value="#{lex.deleteVinImage}"
+										   actionListener="#{createQuotationBean.resetVinImage()}"
+										   process="@this"
+										   update="vin-panel img1 delete-image-panel"
+										   rendered="#{createQuotationBean.vinBase64.length() gt 0}" />
+						</h:panelGroup>
+
+						<p:commandButton id="hidden-btn" style="display:none;"
+										 onclick="PF('statusDialog').show();"
+										 styleClass="w3-btn w3-teal w3-padding-4 w3-ripple p-hide"
+										 process="imgstring1"
+										 actionListener="#{monitorBean.addToActivity('uploaded vin image')}"
+										 update="@this vin-panel delete-image-panel"
+										 oncomplete="PF('statusDialog').hide();">
+						</p:commandButton>
+					</h:panelGroup>
+				</h:panelGroup>
+				<p:message for="vin" id="vin-msg" style="height:10px;" />
+				<br />
+
+				<h:panelGroup rendered="false">
+					<div>
+						<h:outputText value="#{lex.vinLater}" />
+						<h:selectBooleanCheckbox value="#{createQuotationBean.quotationRequest.imageAttached}">
+							<f:ajax listener="#{createQuotationBean.setVinBase64('')}"
+									execute="@this" render="vin-panel image-panel"/>
+						</h:selectBooleanCheckbox>
+					</div>
+				</h:panelGroup>
+				<br />
+
+				<h:commandButton
+						actionListener="#{createQuotationBean.resetToStep(2)}"
+						value="#{lex.previous}" styleClass="btn">
+					<f:ajax execute="@this" render=":form-1:panel :form-1:step" />
+				</h:commandButton>
+
+				<h:commandButton actionListener="#{createQuotationBean.verifyVin()}"
+								 value="#{lex.next}" styleClass="btn">
+					<f:ajax execute="@this :form-1:vin"
+							render="vin-msg vin :form-1:step" />
+				</h:commandButton>
+
+
+			</div>
+		</div>
+	</div>
+	
+</ui:composition>

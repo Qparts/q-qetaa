@@ -46,7 +46,7 @@ public class AWSClient {
                     metadata.addUserMetadata("x-amz-meta-title", "someTitle");
                     metadata.setContentLength(bytes.length);
                     PutObjectRequest request = new PutObjectRequest(bucket, fileName, bais , metadata);
-                    request.setCannedAcl(CannedAccessControlList.PublicRead);
+                    request.setCannedAcl(CannedAccessControlList.BucketOwnerFullControl);
                     s3.putObject(request);
                 }
                 catch(Exception e) {

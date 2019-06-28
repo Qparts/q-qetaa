@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<div class="row step">
+		<div id="div1"
+			 class="col-md-2 col-sm-2 col-xs-2 #{createQuotationBean.step eq 0 ? 'activestep' : ''}">
+			<i class="fa fa-car" aria-hidden="true"/>
+			<p>#{lex.make}</p>
+		</div>
+		<div
+				class="col-md-2 col-sm-2 col-xs-2 #{createQuotationBean.step eq 1 ? 'activestep' : ''}">
+			<i class="fa fa-bullseye" aria-hidden="true"/>
+			<p>#{lex.model}</p>
+		</div>
+		<div
+				class="col-md-2 col-sm-2 col-xs-2 #{createQuotationBean.step eq 2 ? 'activestep' : ''}">
+			<i class="fa fa-calendar-o" aria-hidden="true"/>
+			<p>#{lex.theYear}</p>
+		</div>
+		<div
+				class="col-md-2 col-sm-2 col-xs-2 #{createQuotationBean.step eq 3 ? 'activestep' : ''}">
+			<i class="fa fa-sort-numeric-asc" aria-hidden="true"/>
+			<p>#{lex.theVin}</p>
+		</div>
+		<div
+				class="col-md-2 col-sm-2 col-xs-2 #{createQuotationBean.step eq 4 ? 'activestep' : ''}">
+			<i class="fa fa-columns" aria-hidden="true"/>
+			<p>#{lex.theItems}</p>
+		</div>
+		<div id="last"
+			 class="col-md-2 col-sm-2 col-xs-2 #{createQuotationBean.step eq 5 ? 'activestep' : ''}">
+			<i class="fa fa-paper-plane" aria-hidden="true"/>
+			<p>#{lex.theOrder}</p>
+		</div>
+	</div>
+</ui:composition>
