@@ -54,6 +54,7 @@ public class ActivityMonitorBean implements Serializable {
 	}
 	
 	private void initVisitIndex() {
+		/*
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 		Map<String, Object> map = context.getRequestCookieMap();
 		Object vio = map.get("visitIndex");
@@ -71,23 +72,29 @@ public class ActivityMonitorBean implements Serializable {
 			this.visitIndex = Long.valueOf((String)cookie.getValue());
 			System.out.println("retreived cookie index : " + visitIndex);
 		}
+		*/
 	}
 	
 	private void saveVisitIndexCookie() {
+		/*
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 		Cookie cookie = new Cookie("visitIndex", visitIndex.toString());
 		cookie.setMaxAge(60* 60 * 24 * 365 * 10);
 		
 		 HttpServletResponse response = (HttpServletResponse) context.getResponse();
 		 response.addCookie(cookie);
+		 */
 	}
 
 	private void initSessionId() {
+		/*
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 		sessionId = session.getId();
+		*/
 	}
 
 	private void initIp() {
+		/*
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
 				.getRequest();
 		ip = request.getHeader("X-FORWARDED-FOR");
@@ -97,9 +104,11 @@ public class ActivityMonitorBean implements Serializable {
 		} else {
 			ip = request.getRemoteAddr();
 		}
+		*/
 	}
 
 	private void initOS() {
+		/*
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		String userAgent = request.getHeader("user-agent");
 		// =============OS
@@ -116,10 +125,12 @@ public class ActivityMonitorBean implements Serializable {
 		} else {
 			os = "UnKnown";
 		}
+		*/
 
 	}
 
 	public void addToActivity(String desc) {
+		/*
 		HitActivity hit = new HitActivity();
 		hit.setActivityDes(desc);
 		hit.setCreated(new Date());
@@ -128,18 +139,22 @@ public class ActivityMonitorBean implements Serializable {
 		hit.setVisitIndex(visitIndex);
 		hit.setSessionId(sessionId);
 		this.activities.add(hit);
+		*/
 	}
 
 	public void initCustomer() {
+		/*
 		if (null != loginBean.getLoginObject().getCustomer()) {
 			header = reqs.getSecurityHeader();
 			for (HitActivity hit : activities) {
 				hit.setCustomer(loginBean.getLoginObject().getCustomer());
 			}
 		}
+		*/
 	}
 
 	private void preDestroyInitCustomer() {
+		/*
 		PublicCustomer customer = null;
 		for (HitActivity hi : activities) {
 			if (null != hi.getCustomer()) {
@@ -152,9 +167,11 @@ public class ActivityMonitorBean implements Serializable {
 				hi.setCustomer(customer);
 			}
 		}
+		*/
 	}
 
 	private void addVisitCounter() {
+		/*
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("ip", ip);
 		map.put("device", os);
@@ -164,10 +181,12 @@ public class ActivityMonitorBean implements Serializable {
 		} else {
 
 		}
+		*/
 	}
 
 	@PreDestroy
 	private void destroy() {
+		/*
 		preDestroyInitCustomer();
 		if (activities.size() > 1) {
 			Response r = reqs.postSecuredRequest(AppConstants.POST_HIT_ACTIVITIES, activities);
@@ -177,6 +196,7 @@ public class ActivityMonitorBean implements Serializable {
 				System.out.println("could not post activites");
 			}
 		}
+		*/
 	}
 
 	public List<HitActivity> getActivities() {

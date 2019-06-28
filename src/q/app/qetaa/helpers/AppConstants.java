@@ -4,21 +4,12 @@ public class AppConstants {
 
 
 	private final static String PUBLIC_QUOTATION_SERVICE = SysProps.getValue("quotationPublicService");
-
 	private final static String PUBLIC_VEHICLE_SERVICE = SysProps.getValue("vehiclePublicService");
-
 	private final static String VENDOR_SERVICE = SysProps.getValue("vendorService");
-
-	private final static String CUSTOMER_SERVICE = SysProps.getValue("customerService");
+	//private final static String CUSTOMER_SERVICE = SysProps.getValue("customerService");
 	private final static String PUBLIC_CUSTOMER_SERVICE = SysProps.getValue("customerPublicService");
-
-	private final static String PRODUCT_SERVICE = SysProps.getValue("productService");
-	private final static String INVOICE_SERVICE = SysProps.getValue("invoiceService");
-
 	private final static String PUBLIC_CART_SERVICE = SysProps.getValue("cartPublicService");
-
 	private final static String PUBLIC_LOCATION_SERVICE = SysProps.getValue("locationPublicService");
-
 	public final static String APP_SECRET = SysProps.getValue("appSecret");
 
 
@@ -42,9 +33,9 @@ public class AppConstants {
 	
 
 	//===============HIT COUNTER=================//
-	public final static String POST_HIT_COUNTER = CUSTOMER_SERVICE + "hit";
-	public final static String POST_HIT_ACTIVITIES = CUSTOMER_SERVICE + "hit-activities";
-	public final static String GET_NEW_VISIT_INDEX = CUSTOMER_SERVICE + "new-visit-index";
+//	public final static String POST_HIT_COUNTER = CUSTOMER_SERVICE + "hit";
+//	public final static String POST_HIT_ACTIVITIES = CUSTOMER_SERVICE + "hit-activities";
+//	public final static String GET_NEW_VISIT_INDEX = CUSTOMER_SERVICE + "new-visit-index";
 
 
 	
