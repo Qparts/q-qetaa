@@ -283,12 +283,12 @@ public class LoginBean implements Serializable {
         Map<String,String> map = new HashMap<>();
         map.put("email", username);
         map.put("password", password);
-        Response r = reqs.postSecuredRequest(AppConstants.POST_EMAIL_LOGIN, map, null, 0);
         Response r2 = reqs.postSecuredRequest(AppConstants.POST_EMAIL_LOGIN, map, null, 0);
         System.out.println("r2 is " + r2.getStatus());
         if(r2.getStatus() ==200){
             System.out.println(r2.readEntity(String.class));
         }
+        Response r = reqs.postSecuredRequest(AppConstants.POST_EMAIL_LOGIN, map, null, 0);
         if (r.getStatus() == 200) {
             this.loginObject = r.readEntity(LoginObject.class);
             this.loginStatus = 'A';
