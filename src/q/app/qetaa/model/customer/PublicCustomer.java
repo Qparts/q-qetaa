@@ -17,13 +17,9 @@ public class PublicCustomer {
     private Integer countryId;
     private String defaultLang;
     private char status;
-    private List<Map<String,Object>> socialMedia;
+    private List<PublicSocialMediaProfile> socialMedia;
     private List<PublicAddress> addresses;
     private List<PublicVehicle> vehicles;
-    public List<Map<String, Object>> getSocialMedia() {
-        return socialMedia;
-    }
-
 
     @JsonIgnore
     public PublicVehicle getCustomerVehicleFromId(int customerVehicleId){
@@ -35,14 +31,13 @@ public class PublicCustomer {
         return null;
     }
 
-
-
-    public void setSocialMedia(List<Map<String, Object>> socialMedia) {
-        this.socialMedia = socialMedia;
+    public List<PublicSocialMediaProfile> getSocialMedia() {
+        return socialMedia;
     }
 
-
-
+    public void setSocialMedia(List<PublicSocialMediaProfile> socialMedia) {
+        this.socialMedia = socialMedia;
+    }
 
     public long getId() {
         return id;
@@ -102,9 +97,6 @@ public class PublicCustomer {
     public void setStatus(char status) {
         this.status = status;
     }
-
-
-
 
     public String getDefaultLang() {
         return defaultLang;
