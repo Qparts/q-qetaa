@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import q.app.qetaa.model.vehicle.PublicModelYear;
 import q.app.qetaa.model.vehicle.PublicModelYearContained;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class PublicCustomer {
+public class PublicCustomer implements Serializable {
 
     private long id;
     private String email;

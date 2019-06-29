@@ -2,8 +2,10 @@ package q.app.qetaa.model.customer;
 
 import q.app.qetaa.model.vehicle.PublicModelYearContained;
 
+import java.io.Serializable;
 
-public class PublicVehicle {
+
+public class PublicVehicle implements Serializable {
 	private long id;
 	private Integer vehicleYearId;
 	private long customerId;

@@ -3,8 +3,9 @@ package q.app.qetaa.model.customer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.inject.Inject;
+import java.io.Serializable;
 
-public class PublicAddress {
+public class PublicAddress implements Serializable {
 	private long id;
 	private long customerId;
 	private String line1;
