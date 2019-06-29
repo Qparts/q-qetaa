@@ -301,12 +301,13 @@ public class LoginBean implements Serializable {
             registerModel = new RegisterModel(user, "");
             registerModel.setCountryId(1);
             Response r = reqs.postSecuredRequest(AppConstants.POST_FACEBOOK_LOGIN, registerModel, null, 0);
-            System.out.println("facebook login status"+r.getStatus());
+            System.out.println("facebook login status "+r.getStatus());
             if (r.getStatus() == 404) {
                 this.loginStatus = 'R';// needs registration
                 Helper.redirect("/index");
 
             } else if (r.getStatus() == 200) {
+                System.out.println("suzan");
                 this.loginStatus = 'A';
                 System.out.println("reading facebook login object");
                 this.loginObject = r.readEntity(LoginObject.class);

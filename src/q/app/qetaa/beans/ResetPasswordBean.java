@@ -61,7 +61,6 @@ public class ResetPasswordBean implements Serializable {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("mobile", this.mobile);
 		Response r = reqs.postSecuredRequest(AppConstants.POST_RESET_PASSWORD_SMS, map, null, 0);
-		System.out.println(r.getStatus());
 		if (r.getStatus() == 200) {
 			this.systemSMS = r.readEntity(String.class);
 		} else if (r.getStatus() == 404) {
