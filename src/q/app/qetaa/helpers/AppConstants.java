@@ -5,13 +5,10 @@ public class AppConstants {
 
 	private final static String PUBLIC_QUOTATION_SERVICE = SysProps.getValue("quotationPublicService");
 	private final static String PUBLIC_VEHICLE_SERVICE = SysProps.getValue("vehiclePublicService");
-	private final static String VENDOR_SERVICE = SysProps.getValue("vendorService");
-	//private final static String CUSTOMER_SERVICE = SysProps.getValue("customerService");
 	private final static String PUBLIC_CUSTOMER_SERVICE = SysProps.getValue("customerPublicService");
 	private final static String PUBLIC_CART_SERVICE = SysProps.getValue("cartPublicService");
 	private final static String PUBLIC_LOCATION_SERVICE = SysProps.getValue("locationPublicService");
 	public final static String APP_SECRET = SysProps.getValue("appSecret");
-
 
 	//===============HOST=================//
 	
@@ -26,33 +23,10 @@ public class AppConstants {
 	public static final String FB_SCOPE = "public_profile%2Cemail";//public profile and email
 	public static final String FB_DIALOG_URL = "https://www.facebook.com/dialog/oauth?client_id="+FB_APP_ID+"&redirect_uri="+FB_REDIRECT_URL+"&scope="+FB_SCOPE;
 	public final static String PAGE_SUCCESSFUL = APP_HOST + "successful";
-	
 
 	//===============VENDORS====================//
-	public final static String POST_JOIN_US = VENDOR_SERVICE + "vendor-join-request";
+	public final static String POST_JOIN_US = /*VENDOR_SERVICE + */"vendor-join-request";
 	
-
-	//===============HIT COUNTER=================//
-//	public final static String POST_HIT_COUNTER = CUSTOMER_SERVICE + "hit";
-//	public final static String POST_HIT_ACTIVITIES = CUSTOMER_SERVICE + "hit-activities";
-//	public final static String GET_NEW_VISIT_INDEX = CUSTOMER_SERVICE + "new-visit-index";
-
-
-	
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
 
 	//////////// CART SERVICE CALLS /////////////
 	public final static String POST_CART_CREDIT_CARD = PUBLIC_CART_SERVICE + "cart/credit-card";

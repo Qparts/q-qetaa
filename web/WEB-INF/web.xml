@@ -5,7 +5,7 @@
          version="4.0">
     <display-name>q_web_app</display-name>
     <welcome-file-list>
-        <welcome-file>/coming-soon</welcome-file>
+        <welcome-file>/index</welcome-file>
     </welcome-file-list>
     <context-param>
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
@@ -40,7 +40,7 @@
         <filter-name>loggedFilter</filter-name>
         <url-pattern>/_includes/*</url-pattern>
         <url-pattern>/successful</url-pattern>
-        <!--<url-pattern>/coming-soon</url-pattern>-->
+        <url-pattern>/coming-soon</url-pattern>
     </filter-mapping>
     <filter>
         <filter-name>notLoggedFilter</filter-name>
@@ -49,7 +49,6 @@
     <filter-mapping>
         <filter-name>notLoggedFilter</filter-name>
         <url-pattern>/_includes/*</url-pattern>
-        <url-pattern>/index</url-pattern>
         <url-pattern>/quotations</url-pattern>
         <url-pattern>/checkout</url-pattern>
         <url-pattern>/select-address</url-pattern>

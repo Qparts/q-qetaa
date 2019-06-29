@@ -39,7 +39,6 @@ public class LoginBean implements Serializable {
     private String password;
     private RegisterModel registerModel;
     private boolean remember;
-    private boolean fromCookie;
     private String smsCode;
     private String smsCodeUser;
 
@@ -49,8 +48,8 @@ public class LoginBean implements Serializable {
     @Inject
     private CreateQuotationBean createQuotationBean;
 
-    @Inject
-    private ActivityMonitorBean monitorBean;
+//    @Inject
+  //  private ActivityMonitorBean monitorBean;
 
     @Inject
     private CountryBean countryBean;
@@ -59,11 +58,9 @@ public class LoginBean implements Serializable {
     @PostConstruct
     private void init() {
         remember = false;
-        fromCookie = false;
         registerModel = new RegisterModel();
         registerModel.setCountryId(1);
         registerModel.setMobile("");
-        // scheckCookieMap();
     }
 
 
@@ -83,7 +80,7 @@ public class LoginBean implements Serializable {
         if (email != null && password != null) {
             this.registerModel.setPassword(password);
             this.registerModel.setEmail(email);
-            this.fromCookie = true;
+            //this.fromCookie = true;
             doEmailLogin();
             // do login from cookies
         }
@@ -106,7 +103,6 @@ public class LoginBean implements Serializable {
 
     public void chooseFacebookLogin() {
         loginMechanism = 'F';
-        monitorBean.addToActivity("requested login/register from facebook");
         Helper.redirect(AppConstants.FB_DIALOG_URL);
     }
 
@@ -122,7 +118,6 @@ public class LoginBean implements Serializable {
 
     public void checkCodeLogin() {
         try{
-            monitorBean.addToActivity("login from code");
             String code = Helper.getParam("c");
             String email = Helper.getParam("e");
             String quotationId = Helper.getParam("q");
@@ -132,7 +127,6 @@ public class LoginBean implements Serializable {
             Response r = reqs.postSecuredRequest(AppConstants.POST_CODE_LOGIN, map, null, 0);
             System.out.println(r.getStatus() + " " + AppConstants.POST_CODE_LOGIN);
             if (r.getStatus() == 200) {
-                monitorBean.addToActivity("successful code");
                 this.loginObject = r.readEntity(LoginObject.class);
                 this.loginStatus = 'A';
                 //saveCookie();
@@ -141,7 +135,6 @@ public class LoginBean implements Serializable {
                 String anchor = "#c" +quotationId;
                 Helper.redirect("/quotations" + anchor);
             } else {
-                monitorBean.addToActivity("invalid code login");
                 throw new Exception();
             }
         }catch (Exception ex){
@@ -152,7 +145,6 @@ public class LoginBean implements Serializable {
 
 
     public void chooseEmailRegistration() {
-        monitorBean.addToActivity("chose email registration");
         this.loginMechanism = 'E';// registration
         this.loginStatus = 'R';
     }
@@ -162,7 +154,6 @@ public class LoginBean implements Serializable {
         map.put("mobile", registerModel.getMobile());
         map.put("email", registerModel.getEmail());
         if (this.registerModel.getCountryId() == 1) {
-            //monitorBean.addToActivity("sending sms");
             map.put("countryCode", "966");
             registerModel.setCountryCode("966");
         } else {
@@ -180,15 +171,12 @@ public class LoginBean implements Serializable {
             Response r = reqs.postSecuredRequest(AppConstants.POST_SIGNUP_SMS, map, null, 0);
             if (r.getStatus() == 200) {
                 this.smsCode = r.readEntity(String.class);
-                monitorBean.addToActivity("sms sent to customer: " + smsCode);
             } else if (r.getStatus() == 409) {
-                monitorBean.addToActivity("customer already registered, failed registration");
                 Helper.addErrorMessage(Bundler.getValue("customerRegistered"));
             } else {
                 Helper.addErrorMessage(Bundler.getValue("errorOccured"));
             }
         } else {
-            monitorBean.addToActivity("entered password did not match");
             Helper.addErrorMessage(Bundler.getValue("passwordNotMatched"));
         }
     }
@@ -236,7 +224,6 @@ public class LoginBean implements Serializable {
     }
 
     public void signup() {
-        monitorBean.addToActivity("verifying sms");
         if (this.smsCode.equals(this.smsCodeUser)) {
             registerModel.setCreatedBy(0);
             registerModel.setType('M');
@@ -245,16 +232,14 @@ public class LoginBean implements Serializable {
             }
             Response r = reqs.postSecuredRequest(AppConstants.POST_SIGNUP, registerModel, null, 0);
             if(r.getStatus() == 200) {
-                monitorBean.addToActivity("successful registration mobile: " + registerModel.getMobile());
                 this.loginObject = r.readEntity(LoginObject.class);
                 this.loginStatus = 'A';
                 this.registerModel = new RegisterModel();
                 doLogin();
             } else {
-                monitorBean.addToActivity("failed registration");
+
             }
         } else {
-            monitorBean.addToActivity("entered invalid sms code");
             Helper.addErrorMessage(Bundler.getValue("invalidSms"));
         }
     }
@@ -279,23 +264,15 @@ public class LoginBean implements Serializable {
     }
 
     public void doEmailLogin() {
-        monitorBean.addToActivity("tried to login as " + username);
         Map<String,String> map = new HashMap<>();
         map.put("email", username);
         map.put("password", password);
-        Response r2 = reqs.postSecuredRequest(AppConstants.POST_EMAIL_LOGIN, map, null, 0);
-        System.out.println("r2 is " + r2.getStatus());
-        if(r2.getStatus() ==200){
-            System.out.println(r2.readEntity(String.class));
-        }
         Response r = reqs.postSecuredRequest(AppConstants.POST_EMAIL_LOGIN, map, null, 0);
         if (r.getStatus() == 200) {
             this.loginObject = r.readEntity(LoginObject.class);
             this.loginStatus = 'A';
             doLogin();
-            //saveCookie();
         } else if (r.getStatus() == 404) {
-            monitorBean.addToActivity("wrong password in login");
             Helper.addErrorMessage(Bundler.getValue("passwordNotMatched"));
         } else if (r.getStatus() == 500) {
             Helper.addErrorMessage(Bundler.getValue("passwordNotMatched"));
@@ -318,7 +295,6 @@ public class LoginBean implements Serializable {
     private void doFacebookLogin() {
         String code = Helper.getParam("code");
         if (code != null) {
-            monitorBean.addToActivity("received login code from facebook");
             FacebookClient client = new DefaultFacebookClient(Version.VERSION_2_8);
             FacebookClient.AccessToken token = client.obtainUserAccessToken(AppConstants.FB_APP_ID, AppConstants.FB_APP_SECRET, AppConstants.PAGE_SUCCESSFUL, code);
             client = new DefaultFacebookClient(token.getAccessToken(), Version.VERSION_2_8);
@@ -327,12 +303,10 @@ public class LoginBean implements Serializable {
             registerModel.setCountryId(1);
             Response r = reqs.postSecuredRequest(AppConstants.POST_FACEBOOK_LOGIN, registerModel, null, 0);
             if (r.getStatus() == 404) {
-                monitorBean.addToActivity("requested login from customer but not registered, redirected to register dialog");
                 this.loginStatus = 'R';// needs registration
                 Helper.redirect("/index");
 
             } else if (r.getStatus() == 200) {
-                monitorBean.addToActivity("successful login from facebook");
                 this.loginStatus = 'A';
                 this.loginObject = r.readEntity(LoginObject.class);
                 Helper.redirect("/index");
@@ -340,7 +314,7 @@ public class LoginBean implements Serializable {
                 doLogin();
             }
         } else {
-            monitorBean.addToActivity("error in facebook code");
+
         }
     }
 
@@ -355,8 +329,6 @@ public class LoginBean implements Serializable {
     }
 
     public void doLogin() {
-        monitorBean.addToActivity("successful login");
-        monitorBean.initCustomer();
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().getSessionMap().put("customer.loginObject", loginObject);
         if (createQuotationBean.getStep() == 5) {
@@ -367,7 +339,6 @@ public class LoginBean implements Serializable {
     }
 
     public void doLogout() {
-        monitorBean.addToActivity("logged out");
         deleteCookie();
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("customer.loginObject");
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
