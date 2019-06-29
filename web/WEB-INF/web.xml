@@ -54,7 +54,7 @@
         <url-pattern>/select-address</url-pattern>
         <url-pattern>/add-to-cart</url-pattern>
         <url-pattern>/payment_response</url-pattern>
-<!--        <url-pattern>/coming-soon</url-pattern>-->
+        <url-pattern>/coming-soon</url-pattern>
         <url-pattern>/loyalty</url-pattern>
     </filter-mapping>
     <context-param>
