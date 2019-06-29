@@ -180,9 +180,8 @@ public class CreateQuotationBean implements Serializable {
 
 	private void uploadVinImage(String imageName){
 		if(this.vinImageUploaded) {
-			String fileName = imageName + ".png";
 			quotationRequest.setImageString(vinBase64);
-			AWSClient.uploadImage(quotationRequest.getImageString(), fileName, SysProps.getValue("quotationBucketName"));
+			AWSClient.uploadImage(quotationRequest.getImageString(), imageName, SysProps.getValue("quotationBucketName"));
 			this.lastVinImage = true;
 		}
 	}
