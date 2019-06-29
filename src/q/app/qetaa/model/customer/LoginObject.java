@@ -7,7 +7,6 @@ public class LoginObject implements Serializable {
     private PublicCustomer customer;
     private String token;
     private long tokenExpire;
-    private Character cartId;
 
 
 
@@ -35,11 +34,4 @@ public class LoginObject implements Serializable {
         this.tokenExpire = tokenExpire;
     }
 
-    public Character getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(Character cartId) {
-        this.cartId = cartId;
-    }
 }

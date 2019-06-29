@@ -160,7 +160,6 @@ public class CreateQuotationBean implements Serializable {
 			index++;
 		}
 		Response r = reqs.postSecuredRequest(AppConstants.POST_CREATE_QUOTATION, quotationRequest);
-		System.out.println("create quotation " + r.getStatus());
 		if (r.getStatus() == 200) {
 			/// UPLOAD // //
 			CreateQuotationResponse qResponse =  r.readEntity(CreateQuotationResponse.class);

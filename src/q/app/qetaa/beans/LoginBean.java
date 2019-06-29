@@ -125,7 +125,6 @@ public class LoginBean implements Serializable {
             map.put("code", code);
             map.put("email", email);
             Response r = reqs.postSecuredRequest(AppConstants.POST_CODE_LOGIN, map, null, 0);
-            System.out.println(r.getStatus() + " " + AppConstants.POST_CODE_LOGIN);
             if (r.getStatus() == 200) {
                 this.loginObject = r.readEntity(LoginObject.class);
                 this.loginStatus = 'A';
@@ -309,6 +308,7 @@ public class LoginBean implements Serializable {
 
             } else if (r.getStatus() == 200) {
                 this.loginStatus = 'A';
+                System.out.println("reading facebook login object");
                 this.loginObject = r.readEntity(LoginObject.class);
                 Helper.redirect("/index");
                 // login
