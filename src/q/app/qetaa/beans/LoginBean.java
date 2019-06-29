@@ -302,6 +302,7 @@ public class LoginBean implements Serializable {
             registerModel = new RegisterModel(user, "");
             registerModel.setCountryId(1);
             Response r = reqs.postSecuredRequest(AppConstants.POST_FACEBOOK_LOGIN, registerModel, null, 0);
+            System.out.println("facebook login status"+r.getStatus());
             if (r.getStatus() == 404) {
                 this.loginStatus = 'R';// needs registration
                 Helper.redirect("/index");
