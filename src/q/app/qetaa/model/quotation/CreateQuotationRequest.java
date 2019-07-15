@@ -16,6 +16,9 @@ public class CreateQuotationRequest {
     private String vin;
     private boolean imageAttached;
     private List<CreateQuotationItemRequest> quotationItems;
+    private Character paymentMethood;
+    private CardHolder cardHolder;
+
     @JsonIgnore
     private Boolean customerVehicleNewlyCreated;
     @JsonIgnore
@@ -111,5 +114,21 @@ public class CreateQuotationRequest {
 
     public void setImageString(String imageString) {
         this.imageString = imageString;
+    }
+
+    public Character getPaymentMethood() {
+        return paymentMethood;
+    }
+
+    public void setPaymentMethood(Character paymentMethood) {
+        this.paymentMethood = paymentMethood;
+    }
+
+    public CardHolder getCardHolder() {
+        return cardHolder;
+    }
+
+    public void setCardHolder(CardHolder cardHolder) {
+        this.cardHolder = cardHolder;
     }
 }

@@ -50,6 +50,7 @@
         <filter-name>notLoggedFilter</filter-name>
         <url-pattern>/_includes/*</url-pattern>
         <url-pattern>/quotations</url-pattern>
+        <url-pattern>/quotation-created</url-pattern>
         <url-pattern>/checkout</url-pattern>
         <url-pattern>/select-address</url-pattern>
         <url-pattern>/add-to-cart</url-pattern>

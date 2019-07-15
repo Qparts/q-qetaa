@@ -36,6 +36,9 @@ public class AppConstants {
 	public final static String getPromotionCodeFromCode(String code) {
 		return PUBLIC_CART_SERVICE + "discount/promocode/" + code;
 	}
+	public static String getLiveWallet(long customerId){
+		return PUBLIC_CART_SERVICE + "wallet-amount/" + customerId;
+	}
 
 	//////////// AWS CALLS /////////////////////////
 	public static final String AWS_REGION = "eu-central-1";
@@ -62,6 +65,7 @@ public class AppConstants {
 
 	//////////// QUOTATION SERVICE CALLS /////////////
 	public final static String POST_CREATE_QUOTATION = PUBLIC_QUOTATION_SERVICE + "quotation";
+	public final static String PUT_QUOTATION_PAYMENT = PUBLIC_QUOTATION_SERVICE + "quotation/payment";
 	public final static String PUT_CLOSE_QUOTATION = PUBLIC_QUOTATION_SERVICE + "close-quotation";
 	public final static String getQuotation(long quotationId) {
 		return PUBLIC_QUOTATION_SERVICE + "quotation/" + quotationId;

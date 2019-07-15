@@ -135,30 +135,29 @@ color:#446fb4;
     text-align: center;
 }
 
-.step .col-md-2 {
+.step .col-xs-2 {
     background-color: #fff;
     border: 1px solid #C0C0C0;
     border-left: none;
-    min-height:88pd;
-    padding:5px;
+    min-height:88px;
+	width:14%;
+	padding-right: 8px;
 }
 
-.step .col-md-2:last-child {
+.step .col-xs-2:last-child {
     border: 1px solid #C0C0C0;
 }
 
-.step .col-md-2:first-child {
+.step .col-xs-2:first-child {
     border-radius: 0 5px 5px 0;
 }
 
-.step .col-md-2:last-child {
+.step .col-xs-2:last-child {
     border-radius: 0 0 5px 5px;
 }
 
 .step .col-md-2:hover {
-/*    color: #F58723;
-    cursor: pointer;
-    */
+
 }
 
 .step .activestep {
@@ -184,6 +183,16 @@ color:#446fb4;
 
 .step .title-price{
 	color:#F58723;
+}
+
+.step .subtitle-price{
+	font-size: 15px;
+}
+
+.btn-payment {
+	color: #fff;
+	background-color: green;
+	border-color: green;
 }
 	
 

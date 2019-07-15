@@ -48,9 +48,6 @@ public class LoginBean implements Serializable {
     @Inject
     private CreateQuotationBean createQuotationBean;
 
-//    @Inject
-  //  private ActivityMonitorBean monitorBean;
-
     @Inject
     private CountryBean countryBean;
 
@@ -180,48 +177,6 @@ public class LoginBean implements Serializable {
         }
     }
 
-    public void requestSMSFacebook() {
-        /*
-        monitorBean.addToActivity("request facebook register");
-        Map<String, String> map = new HashMap<String, String>();
-        monitorBean.addToActivity("facebook registration mobile: " + facebookAccess.getMobile());
-        monitorBean.addToActivity("facebook registration email: "+ facebookAccess.getEmail());
-        monitorBean.addToActivity("facebook registration name: " + facebookAccess.getFirstName() + " " + facebookAccess.getLastName());
-        map.put("mobile", facebookAccess.getMobile());
-        map.put("email", facebookAccess.getEmail());
-        String link = "";
-        if (this.facebookAccess.getCountryId() == 1) {
-            monitorBean.addToActivity("sending sms");
-            map.put("countryCode", "966");
-            facebookAccess.setCountryCode("966");
-            link = AppConstants.POST_REGISTER_SMS;
-        }
-
-        else {
-            for (PublicCountry c : countryBean.getCountries()) {
-                if (c.getId() == facebookAccess.getCountryId()) {
-                    monitorBean.addToActivity("chose country: " + c.getName());
-                    map.put("countryCode", c.getCountryCode());
-                    facebookAccess.setCountryCode(c.getCountryCode());
-                    break;
-                }
-            }
-            link = AppConstants.POST_REGISTER_EMAIL;
-        }
-
-        Response r = reqs.postSecuredRequest(link, map);
-        if (r.getStatus() == 200) {
-            this.smsCode = r.readEntity(String.class);
-            monitorBean.addToActivity("sms sent to q.app.qetaa.customer: " + smsCode);
-        } else if (r.getStatus() == 409) {
-            monitorBean.addToActivity("q.app.qetaa.customer already registered, failed registration");
-            Helper.addErrorMessage(Bundler.getValue("customerRegistered"));
-        } else {
-            Helper.addErrorMessage(Bundler.getValue("errorOccured"));
-        }
-        */
-    }
-
     public void signup() {
         if (this.smsCode.equals(this.smsCodeUser)) {
             registerModel.setCreatedBy(0);
@@ -241,25 +196,6 @@ public class LoginBean implements Serializable {
         } else {
             Helper.addErrorMessage(Bundler.getValue("invalidSms"));
         }
-    }
-
-    public void activateAndRegisterSMSFaceook() {
-        /*
-        monitorBean.addToActivity("verifying sms");
-        if (this.smsCode.equals(this.smsCodeUser)) {
-            Response r = reqs.postSecuredRequest(AppConstants.POST_FACEBOOK_REGISTER, facebookAccess);
-            if (r.getStatus() == 200) {
-                monitorBean.addToActivity("successful registration mobile: " + facebookAccess.getMobile());
-                this.loginObject = r.readEntity(LoginObject.class);
-                this.loginStatus = 'A';
-                this.facebookAccess = new FacebookAccess();
-                doLogin();
-            }
-        } else {
-            monitorBean.addToActivity("entered invalid sms");
-            Helper.addErrorMessage(Bundler.getValue("invalidSms"));
-        }
-        */
     }
 
     public void doEmailLogin() {
@@ -301,15 +237,12 @@ public class LoginBean implements Serializable {
             registerModel = new RegisterModel(user, "");
             registerModel.setCountryId(1);
             Response r = reqs.postSecuredRequest(AppConstants.POST_FACEBOOK_LOGIN, registerModel, null, 0);
-            System.out.println("facebook login status "+r.getStatus());
             if (r.getStatus() == 404) {
                 this.loginStatus = 'R';// needs registration
                 Helper.redirect("/index");
 
             } else if (r.getStatus() == 200) {
-                System.out.println("suzan");
                 this.loginStatus = 'A';
-                System.out.println("reading facebook login object");
                 this.loginObject = r.readEntity(LoginObject.class);
                 Helper.redirect("/index");
                 // login
@@ -336,7 +269,6 @@ public class LoginBean implements Serializable {
         if (createQuotationBean.getStep() == 5) {
             PrimeFaces.current().executeScript("resetActive(" + createQuotationBean.getProgressPercentage() + ", '"
                     + createQuotationBean.getProgressStepName() + "');");
-            PrimeFaces.current().executeScript("showCartDialog()");
         }
     }
 

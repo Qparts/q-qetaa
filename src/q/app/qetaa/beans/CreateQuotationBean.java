@@ -2,7 +2,9 @@ package q.app.qetaa.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -13,12 +15,14 @@ import javax.ws.rs.core.Response;
 
 import org.primefaces.PrimeFaces;
 import q.app.qetaa.helpers.*;
+import q.app.qetaa.model.cart.ThreeDConfirmRequest;
 import q.app.qetaa.model.customer.PublicVehicle;
 import q.app.qetaa.model.location.PublicCountry;
 import q.app.qetaa.model.location.PublicRegion;
 import q.app.qetaa.model.quotation.CreateQuotationItemRequest;
 import q.app.qetaa.model.quotation.CreateQuotationRequest;
 import q.app.qetaa.model.quotation.CreateQuotationResponse;
+import q.app.qetaa.model.quotation.CardHolder;
 import q.app.qetaa.model.vehicle.PublicMake;
 import q.app.qetaa.model.vehicle.PublicModel;
 import q.app.qetaa.model.vehicle.PublicModelYear;
@@ -47,11 +51,13 @@ public class CreateQuotationBean implements Serializable {
 	private boolean agree;
 	private int selectedRegionId;
 	private String vinBase64;
+    private char paymentMethod;
+    private CardHolder cardHolder;
+    private CreateQuotationResponse createQuotationResponse;
+    private boolean paymentFailed;
 
 	@Inject
 	private NotLoggedRequester reqsNotLogged;
-	@Inject
-	private ActivityMonitorBean monitorBean;
 	@Inject
 	private Requester reqs;
 	@Inject
@@ -68,16 +74,25 @@ public class CreateQuotationBean implements Serializable {
 	}
 
 
-	private void init() {
-		vinImageUploaded = false;
-		vinBase64 = "";
-		quotationRequest = new CreateQuotationRequest();
-		quotationRequest.setQuotationItems(new ArrayList<>());
-		step = 0;
+	public void init() {
+	    this.vinImageUploaded = false;
+		this.vinBase64 = "";
+		this.quotationRequest = new CreateQuotationRequest();
+		this.quotationRequest.setQuotationItems(new ArrayList<>());
+		this.step = 0;
 		addItem();
 		this.selectedMake = null;
 		this.selectedModel = null;
-	}
+		this.selectedModelYear = null;
+		this.selectedPublicVehicle = null;
+		this.cardHolder = new CardHolder();
+        this.createQuotationResponse = new CreateQuotationResponse();
+        this.paymentMethod = 'N';
+
+        this.selectedRegion = null;
+        this.selectedRegionId = 0;
+        PrimeFaces.current().executeScript("document.getElementById('form-1:vin-img').value = '';");
+    }
 
 	public String getVin(){
 		if(this.selectedPublicVehicle != null){
@@ -118,12 +133,10 @@ public class CreateQuotationBean implements Serializable {
 	}
 
 	public void addItem(String desc) {
-		monitorBean.addToActivity(desc);
 		addItem();
 	}
 
 	public void removeItem(CreateQuotationItemRequest item) {
-		monitorBean.addToActivity("removed item: " + item.getItemName() + ", quantity: " + item.getQuantity());
 		this.quotationRequest.getQuotationItems().remove(item);
 	}
 
@@ -139,8 +152,6 @@ public class CreateQuotationBean implements Serializable {
 	}
 
 	public void submit() {
-		monitorBean.addToActivity("chose city: " + quotationRequest.getCityId());
-		monitorBean.addToActivity("submitting order");
 		quotationRequest.setCustomerId(this.loginBean.getLoginObject().getCustomer().getId());
 		if(selectedPublicVehicle != null){
 			quotationRequest.setCustomerVehicleId(selectedPublicVehicle.getId());
@@ -159,17 +170,24 @@ public class CreateQuotationBean implements Serializable {
 			cqir.setItemName(cqir.getItemName().trim());
 			index++;
 		}
+		quotationRequest.setPaymentMethood(paymentMethod);
+		quotationRequest.setCardHolder(cardHolder);
 		Response r = reqs.postSecuredRequest(AppConstants.POST_CREATE_QUOTATION, quotationRequest);
+		if(r.getStatus() == 202){
+            createQuotationResponse =  r.readEntity(CreateQuotationResponse.class);
+            lastOrderId = createQuotationResponse.getQuotationId();
+            uploadVinImage(createQuotationResponse.getVehicleImageName());
+            uploadItemsImages(createQuotationResponse);
+            Helper.redirect(createQuotationResponse.getTransactionUrl());
+        }
 		if (r.getStatus() == 200) {
 			/// UPLOAD // //
-			CreateQuotationResponse qResponse =  r.readEntity(CreateQuotationResponse.class);
-			lastOrderId = qResponse.getQuotationId();
-			uploadVinImage(qResponse.getVehicleImageName());
-			uploadItemsImages(qResponse);
-			PrimeFaces.current().executeScript("showCompleteDialog()");
-			monitorBean.addToActivity("successful order submitted: " + lastOrderId);
-			init();
-			PrimeFaces.current().executeScript("document.getElementById('form-1:vin-img').value = '';"); 		
+			createQuotationResponse =  r.readEntity(CreateQuotationResponse.class);
+			lastOrderId = createQuotationResponse.getQuotationId();
+			uploadVinImage(createQuotationResponse.getVehicleImageName());
+			uploadItemsImages(createQuotationResponse);
+			paymentFailed = false;
+			Helper.redirect("quotation-created");
 			
 		} else if (r.getStatus() == 429) {
 			// log too many requests
@@ -208,8 +226,6 @@ public class CreateQuotationBean implements Serializable {
 			for (PublicRegion region : country.getRegions()) {
 				if (selectedRegionId == region.getId()) {
 					this.selectedRegion = region;
-					monitorBean.addToActivity(
-							"chose region " + selectedRegion.getCountryId() + " - " + selectedRegion.getName());
 					break;
 				}
 			}
@@ -220,16 +236,12 @@ public class CreateQuotationBean implements Serializable {
 
 	public void verifyItems() {
 		if (quotationRequest.getQuotationItems().size() == 0) {
-			monitorBean.addToActivity("clicked next but no items added");
-			PrimeFaces.current().executeScript("resetActive(80, 'step-5');");
+			PrimeFaces.current().executeScript("resetActive(67, 'step-5');");
 			PrimeFaces.current().ajax().update("form-1:item-msg");
 			Helper.addErrorMessage(Bundler.getValue("addItemsReq"));
 		} else {
-			for (CreateQuotationItemRequest citem : quotationRequest.getQuotationItems()) {
-				monitorBean.addToActivity("added item: " + citem.getItemName() + ", quantity : " + citem.getQuantity());
-			}
 			PrimeFaces.current().ajax().update("form-1:panel");
-			PrimeFaces.current().executeScript("resetActive(100, 'step-6');");
+			PrimeFaces.current().executeScript("resetActive(83, 'step-6');");
 			this.step = 5;
 		}
 	}
@@ -239,14 +251,16 @@ public class CreateQuotationBean implements Serializable {
 		case 0:
 			return 0;
 		case 1:
-			return 20;
+			return 17;
 		case 2:
-			return 40;
+			return 33;
 		case 3:
-			return 60;
+			return 50;
 		case 4:
-			return 80;
+			return 67;
 		case 5:
+			return 83;
+		case 6:
 			return 100;
 		default:
 			return 0;
@@ -267,20 +281,18 @@ public class CreateQuotationBean implements Serializable {
 			return "step-5";
 		case 5:
 			return "step-6";
+		case 6:
+			return "step-7";
+		case 7:
+		    return "step-8";
 		default:
 			return "step-1";
 		}
 	}
 
-	public void clickOrderButton(String button, int i) {
-		monitorBean.addToActivity("clicked " + button);
-		resetToStep(i);
-	}
-
 	public void resetToStep(int i) {
 		switch (i) {
 		case 0:
-			monitorBean.addToActivity("clicked back from models tab");
 			this.step = 0;
 			this.selectedMake = null;
 			this.selectedModel = null;
@@ -289,32 +301,34 @@ public class CreateQuotationBean implements Serializable {
 			PrimeFaces.current().executeScript("resetActive(0, 'step-1');");
 			break;
 		case 1:
-			monitorBean.addToActivity("clicked back from model years tab");
 			this.step = 1;
 			this.selectedModel = null;
 			this.quotationRequest.setVehicleYearId(null);
-			PrimeFaces.current().executeScript("resetActive(20, 'step-2');");
+			PrimeFaces.current().executeScript("resetActive(17, 'step-2');");
 			break;
 		case 2:
-			monitorBean.addToActivity("clicked back from vin tab");
 			this.step = 2;
 			this.quotationRequest.setVehicleYearId(null);
-			PrimeFaces.current().executeScript("resetActive(40, 'step-3');");
+			PrimeFaces.current().executeScript("resetActive(33, 'step-3');");
 			break;
 		case 3:
-			monitorBean.addToActivity("clicked back from add items tab");
 			this.step = 3;
-			PrimeFaces.current().executeScript("resetActive(60, 'step-4');");
+			PrimeFaces.current().executeScript("resetActive(50, 'step-4');");
 			break;
 		case 4:
-			monitorBean.addToActivity("clicked back from submit tab");
 			this.step = 4;
-			PrimeFaces.current().executeScript("resetActive(80, 'step-5');");
+			PrimeFaces.current().executeScript("resetActive(67, 'step-5');");
 			break;
 		case 5:
 			this.step = 5;
-			PrimeFaces.current().executeScript("resetActive(100, 'step-6');");
+			PrimeFaces.current().executeScript("resetActive(83, 'step-6');");
 			break;
+		case 6:
+			this.step = 6;
+			PrimeFaces.current().executeScript("resetActive(100, 'step-7');");
+			break;
+		case 7:
+		    this.step = 7;
 		}
 	}
 
@@ -335,24 +349,83 @@ public class CreateQuotationBean implements Serializable {
 	}
 
 	public void chooseMake(PublicMake selectedMake) {
-		monitorBean.addToActivity("chose make: " + selectedMake.getName());
 		this.selectedMake = selectedMake;
 		this.step = 1;
 	}
 
 	public void chooseModel(PublicModel selectedType) {
-		monitorBean.addToActivity("chose model: " + selectedType.getName());
 		this.selectedModel = selectedType;
 		this.step = 2;
 	}
 
 	public void chooseModelYear(PublicModelYear model) {
-		monitorBean.addToActivity("chose model year: " + model.getYear());
 		this.yearNumber = model.getYear();
 		this.selectedModelYear = model;
 		this.quotationRequest.setVehicleYearId(model.getId());
 		this.step = 3;
 	}
+
+	public void nextPayment(){
+	    if(paymentMethod == 'N'){
+            Helper.addErrorMessage("some error");
+        }else {
+            List<String> errors = cardHolder.verifyPayment(paymentMethod);
+            if (errors.isEmpty()) {
+                if (this.paymentMethod == 'V' || this.paymentMethod == 'M') {
+                    //makeCreditCardRequest();
+                } else if (this.paymentMethod == 'W') {
+                    //makeWireTransferRequest();
+                }
+                resetToStep(6);
+            } else {
+                for (String error : errors) {
+                    //resetToStep(6);
+                    Helper.addErrorMessage(error);
+                }
+            }
+        }
+    }
+
+
+
+
+    public void processPaymentResponse() {
+        try {
+            String paymentId = Helper.getParam("id");// some string
+            String status = Helper.getParam("status");// paid , failed
+            ThreeDConfirmRequest threeD = new ThreeDConfirmRequest();
+            threeD.setQuotationId(createQuotationResponse.getQuotationId());
+            threeD.setCustomerId(quotationRequest.getCustomerId());
+            threeD.setType('Q');
+            threeD.setId(paymentId);
+            threeD.setStatus(status);
+            Response r = reqs.putSecuredRequest(AppConstants.PUT_3D_SECURE_RESPONSE, threeD);
+            if (r.getStatus() == 201) {
+                Map<String,Object> map = new HashMap<String,Object>();
+                map.put("quotationId", createQuotationResponse.getQuotationId());
+                map.put("paymentStatus", status);
+                Response r2 = reqs.putSecuredRequest(AppConstants.PUT_QUOTATION_PAYMENT, map);
+                if (status.equals("paid")) {
+                    paymentFailed = false;
+                    resetToStep(0);
+                    Helper.redirect("quotation-created");
+                    //update
+                } else if (status.equals("failed")) {
+                    paymentFailed = true;
+                    resetToStep(5);
+                    Helper.redirect("create-quotation");
+                }
+
+            } else if(r.getStatus() == 406){
+                Helper.addErrorMessage("An error in updating! please contact customer service");
+            }
+
+        } catch (Exception ex) {
+
+        }
+    }
+
+
 
 	public void verifyVin() {
 		if(this.vinBase64.length() > 0) {
@@ -360,25 +433,35 @@ public class CreateQuotationBean implements Serializable {
 		}
 		if (!this.vinImageUploaded) {
 			if (this.quotationRequest.getVin().length() == 17) {
-				monitorBean.addToActivity("entered correct vin: " + quotationRequest.getVin());
-				PrimeFaces.current().executeScript("resetActive(80, 'step-5');");
+				PrimeFaces.current().executeScript("resetActive(67, 'step-5');");
 				this.step = 4;
 				this.vinImageUploaded = false;
 			} else {
-				monitorBean.addToActivity("entered wrong vin: " + quotationRequest.getVin());
-				PrimeFaces.current().executeScript("resetActive(60, 'step-4');");
+				PrimeFaces.current().executeScript("resetActive(50, 'step-4');");
 				Helper.addErrorMessage(Bundler.getValue("invalidVin"), "form-1:vin");
 			}
 		}else {
 			quotationRequest.setVin("");
-			monitorBean.addToActivity("selected no vin ");
-			PrimeFaces.current().executeScript("resetActive(80, 'step-5');");
+			PrimeFaces.current().executeScript("resetActive(67, 'step-5');");
 			this.step = 4;
 		}
 	}
-	
-	public void resetVinImage() {
-		monitorBean.addToActivity("deleted vin image");
+
+    public String getPaymentMethodString(){
+	    switch (paymentMethod){
+            case 'M':
+                return "مدى";
+            case 'V':
+                return "بطاقة إئتمانية";
+            case 'W':
+                return "تحويل بنكي";
+            default:
+                return "";
+        }
+    }
+
+
+    public void resetVinImage() {
 		this.vinBase64 = "";
 	}
 
@@ -490,4 +573,28 @@ public class CreateQuotationBean implements Serializable {
 	public void setSelectedPublicVehicleId(long selectedPublicVehicleId) {
 		this.selectedPublicVehicleId = selectedPublicVehicleId;
 	}
+
+    public char getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(char paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public CardHolder getCardHolder() {
+        return cardHolder;
+    }
+
+    public void setCardHolder(CardHolder cardHolder) {
+        this.cardHolder = cardHolder;
+    }
+
+    public boolean isPaymentFailed() {
+        return paymentFailed;
+    }
+
+    public void setPaymentFailed(boolean paymentFailed) {
+        this.paymentFailed = paymentFailed;
+    }
 }

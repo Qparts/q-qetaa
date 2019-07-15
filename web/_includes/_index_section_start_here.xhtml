@@ -14,12 +14,9 @@
 								  style="color:#96989b" />
 				</div>
 				<br />
-				<h:commandButton
-						actionListener="#{createQuotationBean.clickOrderButton('اطلب من هنا',createQuotationBean.step)}"
-						value="#{lex.startHere}" id="myBtn3"
-						class="btn btn-primary hvr-push">
-					<f:ajax />
-				</h:commandButton>
+				<h:outputLink value="create-quotation.xhtml" styleClass="btn btn-primary hvr-push">
+					<h:outputText value="#{lex.startHere}"/>
+				</h:outputLink>
 			</div>
 		</div>
 	</div>

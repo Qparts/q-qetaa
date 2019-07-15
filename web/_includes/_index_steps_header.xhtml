@@ -8,32 +8,33 @@
 
 	<div class="row step">
 		<div id="div1"
-			 class="col-md-2 col-sm-2 col-xs-2 #{createQuotationBean.step eq 0 ? 'activestep' : ''}">
+			 class="col-xs-2 #{createQuotationBean.step eq 0 ? 'activestep' : ''}">
 			<i class="fa fa-car" aria-hidden="true"/>
 			<p>#{lex.make}</p>
 		</div>
-		<div
-				class="col-md-2 col-sm-2 col-xs-2 #{createQuotationBean.step eq 1 ? 'activestep' : ''}">
+		<div class="col-xs-2 #{createQuotationBean.step eq 1 ? 'activestep' : ''}">
 			<i class="fa fa-bullseye" aria-hidden="true"/>
 			<p>#{lex.model}</p>
 		</div>
-		<div
-				class="col-md-2 col-sm-2 col-xs-2 #{createQuotationBean.step eq 2 ? 'activestep' : ''}">
+		<div class="col-xs-2 #{createQuotationBean.step eq 2 ? 'activestep' : ''}">
 			<i class="fa fa-calendar-o" aria-hidden="true"/>
 			<p>#{lex.theYear}</p>
 		</div>
-		<div
-				class="col-md-2 col-sm-2 col-xs-2 #{createQuotationBean.step eq 3 ? 'activestep' : ''}">
+		<div class="col-xs-2 #{createQuotationBean.step eq 3 ? 'activestep' : ''}">
 			<i class="fa fa-sort-numeric-asc" aria-hidden="true"/>
 			<p>#{lex.theVin}</p>
 		</div>
-		<div
-				class="col-md-2 col-sm-2 col-xs-2 #{createQuotationBean.step eq 4 ? 'activestep' : ''}">
+		<div class="col-xs-2 #{createQuotationBean.step eq 4 ? 'activestep' : ''}">
 			<i class="fa fa-columns" aria-hidden="true"/>
 			<p>#{lex.theItems}</p>
 		</div>
+		<div id="pay"
+			 class="col-xs-2 #{createQuotationBean.step eq 5 ? 'activestep' : ''}">
+			<i class="fa fa-usd" aria-hidden="true"/>
+			<p>الدفع</p>
+		</div>
 		<div id="last"
-			 class="col-md-2 col-sm-2 col-xs-2 #{createQuotationBean.step eq 5 ? 'activestep' : ''}">
+			 class="col-xs-2 #{createQuotationBean.step eq 6 ? 'activestep' : ''}">
 			<i class="fa fa-paper-plane" aria-hidden="true"/>
 			<p>#{lex.theOrder}</p>
 		</div>

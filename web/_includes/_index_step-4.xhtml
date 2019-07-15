@@ -6,7 +6,8 @@
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="row setup-content step hiddenStepInfo" id="step-4">
+	<h:panelGroup rendered="#{createQuotationBean.step eq 3}">
+	<div class="row setup-content step" id="step-4">
 		<p>#{lex.make}: #{createQuotationBean.fullVehicleName}</p>
 		<div class="col-xs-12">
 			<div class="col-md-12 well text-center">
@@ -105,12 +106,10 @@
 				<h:commandButton actionListener="#{createQuotationBean.verifyVin()}"
 								 value="#{lex.next}" styleClass="btn">
 					<f:ajax execute="@this :form-1:vin"
-							render="vin-msg vin :form-1:step" />
+							render="vin-msg vin :form-1:step @form" />
 				</h:commandButton>
-
-
 			</div>
 		</div>
 	</div>
-	
+	</h:panelGroup>
 </ui:composition>

@@ -33,9 +33,6 @@ public class CartBean implements Serializable {
     private boolean havePromo;
 
     @Inject
-    private ActivityMonitorBean monitorBean;
-
-    @Inject
     private LoginBean loginBean;
 
     @Inject
@@ -52,6 +49,7 @@ public class CartBean implements Serializable {
         havePromo = false;
         promoVerified =false;
         promoCodeQuery = "";
+        initLiveWallet();
     }
 
     public void checkStage() {
@@ -62,6 +60,13 @@ public class CartBean implements Serializable {
         }
     }
 
+    public void initLiveWallet(){
+        Response r = reqs.getSecuredRequest(AppConstants.getLiveWallet(loginBean.getLoginObject().getCustomer().getId()));
+        if(r.getStatus() == 200){
+            Map<String,Object> map = r.readEntity(Map.class);
+            this.cartRequest.setWalletAmount(((Number)map.get("amount")).doubleValue());
+        }
+    }
 
     //
     public void verifyPromoCode() {
@@ -105,19 +110,15 @@ public class CartBean implements Serializable {
     }
 
     public void checkout() {
-        monitorBean.addToActivity("verifying q.app.qetaa.payment");
         List<String> errors = verifyPayment();
         if (errors.isEmpty()) {
             if (this.paymentMethod == 'V') {
-                monitorBean.addToActivity("making credit card payment request");
                 makeCreditCardRequest();
             } else if (this.paymentMethod == 'W') {
-                monitorBean.addToActivity("making wire transfer request");
                 makeWireTransferRequest();
             }
         } else {
             for (String error : errors) {
-                monitorBean.addToActivity("q.app.qetaa.payment error: " + error);
                 Helper.addErrorMessage(error);
             }
         }
@@ -126,18 +127,15 @@ public class CartBean implements Serializable {
     private void makeCreditCardRequest() {
         Response r = reqs.postSecuredRequest(AppConstants.POST_CART_CREDIT_CARD, cartRequest);
         if (r.getStatus() == 202) {
-            monitorBean.addToActivity("redirecting to payment page");
             cartRequestResponse = r.readEntity(CartRequestResponse.class);
             Helper.redirect(cartRequestResponse.getTransactionUrl());
         } else if (r.getStatus() == 200) {
-            monitorBean.addToActivity("successfully paid without 3d secure");
             //successful transaction
             cartRequestResponse = r.readEntity(CartRequestResponse.class);
             paymentFailed = false;
             stage = 5;
             Helper.redirect("checkout");
         } else {
-            monitorBean.addToActivity("error in payment from our server");
             Helper.addErrorMessage("لم تتم عملية الدفع بنجاح, الرجاء المحاولة مرة اخرى");
         }
     }
@@ -146,7 +144,6 @@ public class CartBean implements Serializable {
     private void makeWireTransferRequest() {
         Response r = reqs.postSecuredRequest(AppConstants.POST_CART_WIRE_TRANSFER, cartRequest);
         if (r.getStatus() == 200) {
-            monitorBean.addToActivity("successful wire transfer request");
             cartRequestResponse = r.readEntity(CartRequestResponse.class);
             stage = 4;
             Helper.redirect("checkout");
@@ -231,7 +228,6 @@ public class CartBean implements Serializable {
 
     public void processPaymentResponse() {
         try {
-            monitorBean.addToActivity("received response from credit card payment");
             String paymentId = Helper.getParam("id");// some string
             String status = Helper.getParam("status");// paid , failed
             ThreeDConfirmRequest threeD = new ThreeDConfirmRequest();
@@ -242,12 +238,10 @@ public class CartBean implements Serializable {
             Response r = reqs.putSecuredRequest(AppConstants.PUT_3D_SECURE_RESPONSE, threeD);
             if (r.getStatus() == 201) {
                 if (status.equals("paid")) {
-                    monitorBean.addToActivity("successful payment at credit card, payment id: " + paymentId);
                     paymentFailed = false;
                     stage = 5;
                     Helper.redirect("checkout");
                 } else if (status.equals("failed")) {
-                    monitorBean.addToActivity("failed credit card payment");
                     paymentFailed = true;
                     Helper.addErrorMessage("لم تتم عملية الدفع بنجاح, الرجاء المحاولة مرة اخرى");
                     Helper.redirect("checkout");

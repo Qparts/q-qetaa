@@ -18,6 +18,9 @@ public class CartRequest implements Serializable {
     private Discount discount;
     private Integer preferredCuorier;
     private List<CartItemRequest> cartItems;
+    private double walletAmount;
+
+
 
     private Integer ccMonth;
     private Integer ccYear;
@@ -101,7 +104,7 @@ public class CartRequest implements Serializable {
 
     @JsonIgnore
     public double getGrandTotalAfterDiscount(){
-        return getSubTotalAfterDiscount() + getTotalVatAfterDiscount();
+        return getSubTotalAfterDiscount() + getTotalVatAfterDiscount() - walletAmount;
     }
 
     public String getCcCvc() {
@@ -206,5 +209,13 @@ public class CartRequest implements Serializable {
 
     public void setDiscount(Discount discount) {
         this.discount = discount;
+    }
+
+    public double getWalletAmount() {
+        return walletAmount;
+    }
+
+    public void setWalletAmount(double walletAmount) {
+        this.walletAmount = walletAmount;
     }
 }

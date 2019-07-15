@@ -159,6 +159,13 @@
 											</h:outputText>
 										</h:panelGroup>
 										<h:panelGroup layout="block" style="padding-bottom: 10px;">
+											<h:outputText value="مبلغ المحفظة" style="font-size: 12px; color: #aaa;font-weight: 900;" />
+											<br />
+											<h:outputText id="live-wallet" value="#{cartBean.cartRequest.walletAmount}" style="color:forestgreen;">
+												<f:convertNumber type="currency" currencySymbol="SR " locale="en_US" />
+											</h:outputText>
+										</h:panelGroup>
+										<h:panelGroup layout="block" style="padding-bottom: 10px;">
 											<h:outputText value="الإجمالي" style="font-size: 12px; color: #aaa;font-weight: 900;" />
 											<p style="font-size: 20px;">
 												<h:outputText style="color: #cc4f1d; font-weight: 600;"

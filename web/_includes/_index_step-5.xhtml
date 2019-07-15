@@ -6,7 +6,8 @@
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-	<div class="row setup-content step hiddenStepInfo" id="step-5">
+	<h:panelGroup rendered="#{createQuotationBean.step eq 4}">
+	<div class="row setup-content step" id="step-5">
 		<p>#{lex.make}: #{createQuotationBean.fullVehicleName}</p>
 		<p>#{lex.vin}: #{createQuotationBean.vin}</p>
 		<div class="col-xs-12">
@@ -79,4 +80,5 @@
 			</div>
 		</div>
 	</div>
+	</h:panelGroup>
 </ui:composition>

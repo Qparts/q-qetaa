@@ -38,10 +38,6 @@
 		</div>
 	</div>
 	</section>
-	<h:form>
-		<h:outputText
-			value="#{activityMonitorBean.addToActivity('visited index page')}" />
-	</h:form>
 	<section id="pricing">
 		<ui:include src="_includes/_index_section_start_here.xhtml"/>
 	</section>
@@ -62,55 +58,6 @@
 		<ui:include src="_includes/_index_dialog_completed_request.xhtml"/>
 	</div>
 
-	<!-- login dialog -->
-	<div class="modal fade" id="myModal" role="dialog">
-		<ui:include src="_includes/_index_dialog_login.xhtml"/>
-	</div>
 
-	<!-- register dialog -->
-	<div class="modal fade" id="myModal2" role="dialog">
-		<ui:include src="_includes/_index_dialog_register.xhtml"/>
-	</div>
-
-
-	<h:form id="form-1" enctype="multipart/form-data">
-		<!-- cart dialog -->
-		<div class="modal fade" id="myModal3" role="dialog">
-			<div class="container" width="500px;">
-				<div class="modal-dialog">
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">#{lex.quotationOrder}</h4>
-						</div>
-						<div class="modal-body">
-							<ui:include src="_includes/_index_steps_progress-bar.xhtml "/>
-							<h:panelGroup id="step">
-								<ui:include src="_includes/_index_steps_header.xhtml"/>
-							</h:panelGroup>
-							<h:panelGroup id="panel">
-								<ui:include src="_includes/_index_step-1.xhtml"/>
-								<ui:include src="_includes/_index_step-2.xhtml"/>
-								<ui:include src="_includes/_index_step-3.xhtml"/>
-								<ui:include src="_includes/_index_step-4.xhtml"/>
-								<ui:include src="_includes/_index_step-5.xhtml"/>
-								<ui:include src="_includes/_index_step-6.xhtml"/>
-							</h:panelGroup>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</h:form>
-	<div class="w3-container">
-		<p:ajaxStatus onstart="PF('statusDialog').show()"
-			onsuccess="PF('statusDialog').hide()" />
-		<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
-			closable="false" resizable="false" showHeader="false"
-			style="z-index:99999">
-			<p:graphicImage name="/images/ajax-loader.gif" />
-		</p:dialog>
-	</div>
 </h:body>
 </html>
