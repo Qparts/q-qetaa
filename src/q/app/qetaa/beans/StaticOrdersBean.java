@@ -12,7 +12,8 @@ import javax.inject.Named;
 @SessionScoped
 public class StaticOrdersBean implements Serializable{
 
-	private static final String WHATSAPP_PHONE_NUNBER = "966508448856";
+//	private static final String WHATSAPP_PHONE_NUNBER = "966508448856";
+	private static final String WHATSAPP_PHONE_NUNBER = "966547074452";
 	private static final long serialVersionUID = 1L;
 	private String[] vehicle = new String[3];
 	private String[] city = new String[3];
