@@ -13,11 +13,11 @@
 			<div class="col-md-12 well text-center">
 				<h:panelGroup rendered="#{not loginBean.logged}">
 					<a onclick="hideModalAndShowLogin()">
-						<h:outputText value=" قم بتسجيل الدخول للإختيار من السيارات المضافة في الكراج" />
+						<h:outputText value="#{lex.loginToSelectGarageVehicles}" />
 					</a>
 				</h:panelGroup>
 				<h:panelGroup rendered="#{loginBean.logged and loginBean.loginObject.customer.vehicles.size() gt 0}">
-					<p class="title-price">اختر سيارة مضافة</p>
+					<p class="title-price">#{lex.selectAddedVehicle}</p>
 					<ui:repeat value="#{loginBean.loginObject.customer.vehicles}" var="veh">
 						<p:commandLink value="#{veh.vehicle.fullName}" process="@this"
 									   actionListener="#{createQuotationBean.choosePublicVehicle(veh)}"
@@ -26,9 +26,9 @@
 						<br/>
 					</ui:repeat>
 					<br/>
-					<p class="title-price">أو</p>
+					<p class="title-price">#{lex.orR}</p>
 				</h:panelGroup>
-				<p class="title-price">اختر سيارة جديدة</p>
+				<p class="title-price">#{lex.selectNewVehicle}</p>
 				<p:dataGrid value="#{createQuotationBean.makes}" var="make"
 							columns="3" styleClass="order-datagrid" style="width: 100%">
 					<p:column style="width:10%">

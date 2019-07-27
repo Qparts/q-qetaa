@@ -241,8 +241,7 @@
 								<h:selectOneMenu value="#{cartBean.paymentMethod}"
 												 id="payment" styleClass="form-control">
 									<f:selectItem itemValue="N" itemLabel="#{lex.selectPayment}" />
-									<f:selectItem itemValue="W" itemLabel="#{lex.wire}" />
-									<f:selectItem itemValue="V" itemLabel="#{lex.visa} - #{lex.masterCard}" />
+									<f:selectItem itemValue="V" itemLabel="#{lex.visa} - #{lex.masterCard} - #{lex.mada} "/>
 									<f:ajax execute="@form" render=":form-3"/>
 								</h:selectOneMenu>
 								<br /> <br />

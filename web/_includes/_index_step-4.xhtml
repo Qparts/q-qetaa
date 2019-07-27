@@ -18,7 +18,7 @@
 									styleClass="whyvin-image" />
 				</p:tooltip>
 				<h:outputLink id="whyvin" value="#">
-					<h:outputText value="لماذا نطلب رقم الهيكل؟" />
+					<h:outputText value="#{lex.whyVin}" />
 				</h:outputLink>
 				<br />
 				<div>
@@ -49,14 +49,14 @@
 					<h:panelGroup rendered="#{not createQuotationBean.quotationRequest.imageAttached}">
 						<div>
 							<br />
-							<h:outputText value="#{lex.orAdd}" />
+							<h:outputText value="#{lex.orR}" />
 						</div>
 						<div onclick="replaceButton('form-1:vin-img')">
 							<h:outputLink value="#">#{lex.addVinImage}</h:outputLink>
 						</div>
 						<br />
 						<h:inputFile style="display:none;" id="vin-img"
-									 label="#{lex.VIUpload}"
+									 label="#{lex.addVinImage}"
 									 onchange="handleFileSelect(this, 'form-1:img1', 'form-1:imgstring1' , 'form-1:hidden-btn');">
 						</h:inputFile>
 						<h:graphicImage id="img1" value="#{createQuotationBean.vinBase64}"
@@ -85,18 +85,6 @@
 				</h:panelGroup>
 				<p:message for="vin" id="vin-msg" style="height:10px;" />
 				<br />
-
-				<h:panelGroup rendered="false">
-					<div>
-						<h:outputText value="#{lex.vinLater}" />
-						<h:selectBooleanCheckbox value="#{createQuotationBean.quotationRequest.imageAttached}">
-							<f:ajax listener="#{createQuotationBean.setVinBase64('')}"
-									execute="@this" render="vin-panel image-panel"/>
-						</h:selectBooleanCheckbox>
-					</div>
-				</h:panelGroup>
-				<br />
-
 				<h:commandButton
 						actionListener="#{createQuotationBean.resetToStep(2)}"
 						value="#{lex.previous}" styleClass="btn">

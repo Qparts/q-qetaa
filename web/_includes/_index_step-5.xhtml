@@ -53,7 +53,7 @@
 				</h:panelGroup>
 				<h:commandLink
 						actionListener="#{createQuotationBean.addItem('clicked add item')}"
-						value="أضف قطعة">
+						value="#{lex.addAnItem}">
 					<span class="btn glyphicon glyphicon-plus" />
 					<f:ajax render=":form-1:table :form-1:item-msg"
 							execute="@this" />

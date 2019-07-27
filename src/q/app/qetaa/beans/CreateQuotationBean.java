@@ -115,6 +115,7 @@ public class CreateQuotationBean implements Serializable {
 		case 3:
 		case 4:
 		case 5:
+		case 6:
 			if(this.selectedPublicVehicle != null){
 				s += selectedPublicVehicle.getVehicle().getFullName();
 			}
@@ -152,6 +153,7 @@ public class CreateQuotationBean implements Serializable {
 	}
 
 	public void submit() {
+		System.out.println("received");
 		quotationRequest.setCustomerId(this.loginBean.getLoginObject().getCustomer().getId());
 		if(selectedPublicVehicle != null){
 			quotationRequest.setCustomerVehicleId(selectedPublicVehicle.getId());
@@ -170,30 +172,43 @@ public class CreateQuotationBean implements Serializable {
 			cqir.setItemName(cqir.getItemName().trim());
 			index++;
 		}
-		quotationRequest.setPaymentMethood(paymentMethod);
+		quotationRequest.setPaymentMethod(paymentMethod);
 		quotationRequest.setCardHolder(cardHolder);
-		Response r = reqs.postSecuredRequest(AppConstants.POST_CREATE_QUOTATION, quotationRequest);
-		if(r.getStatus() == 202){
-            createQuotationResponse =  r.readEntity(CreateQuotationResponse.class);
-            lastOrderId = createQuotationResponse.getQuotationId();
-            uploadVinImage(createQuotationResponse.getVehicleImageName());
-            uploadItemsImages(createQuotationResponse);
-            Helper.redirect(createQuotationResponse.getTransactionUrl());
-        }
-		if (r.getStatus() == 200) {
-			/// UPLOAD // //
-			createQuotationResponse =  r.readEntity(CreateQuotationResponse.class);
-			lastOrderId = createQuotationResponse.getQuotationId();
-			uploadVinImage(createQuotationResponse.getVehicleImageName());
-			uploadItemsImages(createQuotationResponse);
-			paymentFailed = false;
-			Helper.redirect("quotation-created");
-			
-		} else if (r.getStatus() == 429) {
-			// log too many requests
-		} else {
-			// log exception
+		System.out.println("payment method = " + paymentMethod);
+		if(paymentMethod == 'W'){
+			Response r = reqs.postSecuredRequest(AppConstants.POST_CREATE_QUOTATION_WIRE, quotationRequest);
+			if(r.getStatus() == 200){
+				createQuotationResponse =  r.readEntity(CreateQuotationResponse.class);
+				successfulQuotationPayment();
+			}
+			else{
+				Helper.addErrorMessage("An error occured");
+			}
 		}
+		else if(paymentMethod == 'M' || paymentMethod == 'V'){
+			Response r = reqs.postSecuredRequest(AppConstants.POST_CREATE_QUOTATION_CC, quotationRequest);
+			System.out.println("response from server "+ r.getStatus());
+			if (r.getStatus() == 200) {
+				createQuotationResponse =  r.readEntity(CreateQuotationResponse.class);
+				successfulQuotationPayment();
+			}
+			if(r.getStatus() == 202){
+				createQuotationResponse =  r.readEntity(CreateQuotationResponse.class);
+				lastOrderId = createQuotationResponse.getQuotationId();
+				uploadVinImage(createQuotationResponse.getVehicleImageName());
+				uploadItemsImages(createQuotationResponse);
+				Helper.redirect(createQuotationResponse.getTransactionUrl());
+			}
+		}
+	}
+
+	private void successfulQuotationPayment(){
+		/// UPLOAD // //
+		lastOrderId = createQuotationResponse.getQuotationId();
+		uploadVinImage(createQuotationResponse.getVehicleImageName());
+		uploadItemsImages(createQuotationResponse);
+		paymentFailed = false;
+		Helper.redirect("quotation-created");
 	}
 
 	private void uploadVinImage(String imageName){

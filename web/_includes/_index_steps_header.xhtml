@@ -10,33 +10,33 @@
 		<div id="div1"
 			 class="col-xs-2 #{createQuotationBean.step eq 0 ? 'activestep' : ''}">
 			<i class="fa fa-car" aria-hidden="true"/>
-			<p>#{lex.make}</p>
+			<p>#{lex.stepHeaderMake}</p>
 		</div>
 		<div class="col-xs-2 #{createQuotationBean.step eq 1 ? 'activestep' : ''}">
 			<i class="fa fa-bullseye" aria-hidden="true"/>
-			<p>#{lex.model}</p>
+			<p>#{lex.stepHeaderModel}</p>
 		</div>
 		<div class="col-xs-2 #{createQuotationBean.step eq 2 ? 'activestep' : ''}">
 			<i class="fa fa-calendar-o" aria-hidden="true"/>
-			<p>#{lex.theYear}</p>
+			<p>#{lex.stepHeaderModelYear}</p>
 		</div>
 		<div class="col-xs-2 #{createQuotationBean.step eq 3 ? 'activestep' : ''}">
 			<i class="fa fa-sort-numeric-asc" aria-hidden="true"/>
-			<p>#{lex.theVin}</p>
+			<p>#{lex.stepHeaderVin}</p>
 		</div>
 		<div class="col-xs-2 #{createQuotationBean.step eq 4 ? 'activestep' : ''}">
 			<i class="fa fa-columns" aria-hidden="true"/>
-			<p>#{lex.theItems}</p>
+			<p>#{lex.stepHeaderItems}</p>
 		</div>
 		<div id="pay"
 			 class="col-xs-2 #{createQuotationBean.step eq 5 ? 'activestep' : ''}">
 			<i class="fa fa-usd" aria-hidden="true"/>
-			<p>الدفع</p>
+			<p>#{lex.stepHeaderPayment}</p>
 		</div>
 		<div id="last"
 			 class="col-xs-2 #{createQuotationBean.step eq 6 ? 'activestep' : ''}">
 			<i class="fa fa-paper-plane" aria-hidden="true"/>
-			<p>#{lex.theOrder}</p>
+			<p>#{lex.stepHeaderOrder}</p>
 		</div>
 	</div>
 </ui:composition>

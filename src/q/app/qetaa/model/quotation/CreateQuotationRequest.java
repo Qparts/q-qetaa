@@ -6,7 +6,6 @@ import java.util.List;
 
 public class CreateQuotationRequest {
 
-
     private Long customerVehicleId;
     private long customerId;
     private int cityId;
@@ -16,9 +15,8 @@ public class CreateQuotationRequest {
     private String vin;
     private boolean imageAttached;
     private List<CreateQuotationItemRequest> quotationItems;
-    private Character paymentMethood;
+    private Character paymentMethod;
     private CardHolder cardHolder;
-
     @JsonIgnore
     private Boolean customerVehicleNewlyCreated;
     @JsonIgnore
@@ -116,12 +114,12 @@ public class CreateQuotationRequest {
         this.imageString = imageString;
     }
 
-    public Character getPaymentMethood() {
-        return paymentMethood;
+    public Character getPaymentMethod() {
+        return paymentMethod;
     }
 
-    public void setPaymentMethood(Character paymentMethood) {
-        this.paymentMethood = paymentMethood;
+    public void setPaymentMethod(Character paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
     public CardHolder getCardHolder() {
