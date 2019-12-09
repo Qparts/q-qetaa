@@ -25,7 +25,8 @@ public class QuotationsBean implements Serializable {
 
     //private static final String WHATSAPP_PHONE_NUNBER = "966550955954";
 //    private static final String WHATSAPP_PHONE_NUNBER = "966508448856";
-    private static final String WHATSAPP_PHONE_NUNBER = "966547074452";
+//    private static final String WHATSAPP_PHONE_NUNBER = "966547074452";
+    private static final String WHATSAPP_PHONE_NUNBER = "966531235501";
     private static final long serialVersionUID = 1L;
     private PublicQuotation selectedQuotation;
     private List<PublicQuotation> closedQuotations;
