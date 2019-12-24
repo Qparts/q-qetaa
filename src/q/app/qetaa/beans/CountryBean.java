@@ -42,7 +42,6 @@ public class CountryBean implements Serializable {
     private void initCountries(){
         String header = reqs.getSecurityHeader();
         Response r = PojoRequester.getSecuredRequest(AppConstants.GET_ACTIVE_COUNTRIES, header);
-        System.out.println(r.getStatus());
         if (r.getStatus() == 200) {
             countries = r.readEntity(new GenericType<List<PublicCountry>>() {
             });

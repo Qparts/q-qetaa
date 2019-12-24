@@ -153,7 +153,6 @@ public class CreateQuotationBean implements Serializable {
 	}
 
 	public void submit() {
-		System.out.println("received");
 		quotationRequest.setCustomerId(this.loginBean.getLoginObject().getCustomer().getId());
 		if(selectedPublicVehicle != null){
 			quotationRequest.setCustomerVehicleId(selectedPublicVehicle.getId());
