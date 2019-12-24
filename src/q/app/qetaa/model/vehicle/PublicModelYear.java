@@ -15,6 +15,24 @@ public class PublicModelYear implements Serializable {
     private int modelId;
     private int makeId;
     private int year;
+    private String imageLarge;
+    private String imageSmall;
+
+    public String getImageLarge() {
+        return imageLarge;
+    }
+
+    public void setImageLarge(String imageLarge) {
+        this.imageLarge = imageLarge;
+    }
+
+    public String getImageSmall() {
+        return imageSmall;
+    }
+
+    public void setImageSmall(String imageSmall) {
+        this.imageSmall = imageSmall;
+    }
 
     public int getId() {
         return id;
