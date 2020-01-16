@@ -1,10 +1,7 @@
 package q.app.qetaa.model.product;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "prd_brand")
 public class PublicBrand implements Serializable {
     private int id;
     private String name;
