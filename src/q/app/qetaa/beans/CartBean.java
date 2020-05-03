@@ -4,14 +4,18 @@ import q.app.qetaa.helpers.AppConstants;
 import q.app.qetaa.helpers.Bundler;
 import q.app.qetaa.helpers.Helper;
 import q.app.qetaa.model.cart.*;
+import q.app.qetaa.model.location.PublicCountry;
+import q.app.qetaa.model.quotation.PaymentRequest;
 import q.app.qetaa.model.quotation.PublicQuotation;
 import q.app.qetaa.model.quotation.PublicQuotationItem;
 import q.app.qetaa.reqs.Requester;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
 import java.util.*;
@@ -37,6 +41,9 @@ public class CartBean implements Serializable {
 
     @Inject
     private Requester reqs;
+
+    @Inject
+    private CountryBean countryBean;
 
     @PostConstruct
     public void init() {
@@ -124,7 +131,48 @@ public class CartBean implements Serializable {
         }
     }
 
+    private void preparePaymentRequest(PaymentRequest paymentRequest){
+        paymentRequest.setSalesType('C');
+        paymentRequest.setPaymentMethod('C');
+        paymentRequest.setCustomerId(loginBean.getLoginObject().getCustomer().getId());
+        paymentRequest.setBaseAmount(this.cartRequest.getSubTotal());
+        paymentRequest.setPromoDiscount(this.cartRequest.getTotalDiscount());
+        paymentRequest.setVatPercentage(.05);
+        paymentRequest.setCreated(new Date());
+        paymentRequest.setCountryId(loginBean.getLoginObject().getCustomer().getCountryId());
+        paymentRequest.setCurrency("SAR");
+        paymentRequest.setThreeDSecure(true);
+        //card info
+        paymentRequest.setNumber(Long.valueOf(this.cartRequest.getCcNumber()));
+        paymentRequest.setExpMonth(this.cartRequest.getCcMonth());
+        paymentRequest.setExpYear(this.cartRequest.getCcYear() - 2000);
+        paymentRequest.setCvc(Integer.valueOf(this.cartRequest.getCcCvc()));
+        paymentRequest.setNameOnCard(this.cartRequest.getCcName());
+        PublicCountry country = countryBean.getCountryFromId(loginBean.getLoginObject().getCustomer().getCountryId());
+        paymentRequest.setCountry(country.getName());
+        //customer or vendor user
+        paymentRequest.setFirstName(loginBean.getLoginObject().getCustomer().getFirstName());
+        paymentRequest.setLastName(loginBean.getLoginObject().getCustomer().getLastName());
+        paymentRequest.setEmail(loginBean.getLoginObject().getCustomer().getEmail());
+        paymentRequest.setCountryCode(country.getCountryCode());
+        paymentRequest.setMobile(loginBean.getLoginObject().getCustomer().getMobile());
+        paymentRequest.setClientIp(getClientIp());
+    }
+
+    private String getClientIp() {
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String ipAddress = request.getHeader("X-FORWARDED-FOR");
+        if (ipAddress == null) {
+            ipAddress = request.getRemoteAddr();
+        }
+        return ipAddress;
+    }
+
+
     private void makeCreditCardRequest() {
+        PaymentRequest paymentRequest = new PaymentRequest();
+        preparePaymentRequest(paymentRequest);
+        cartRequest.setPaymentRequest(paymentRequest);
         Response r = reqs.postSecuredRequest(AppConstants.POST_CART_CREDIT_CARD, cartRequest);
         if (r.getStatus() == 202) {
             cartRequestResponse = r.readEntity(CartRequestResponse.class);
@@ -228,33 +276,41 @@ public class CartBean implements Serializable {
 
     public void processPaymentResponse() {
         try {
-            String paymentId = Helper.getParam("id");// some string
-            String status = Helper.getParam("status");// paid , failed
-            ThreeDConfirmRequest threeD = new ThreeDConfirmRequest();
-            threeD.setCartId(cartRequestResponse.getCartId());
-            threeD.setCustomerId(cartRequest.getCustomerId());
-            threeD.setId(paymentId);
-            threeD.setStatus(status);
-            Response r = reqs.putSecuredRequest(AppConstants.PUT_3D_SECURE_RESPONSE, threeD);
-            if (r.getStatus() == 201) {
-                if (status.equals("paid")) {
-                    paymentFailed = false;
-                    stage = 5;
-                    Helper.redirect("checkout");
-                } else if (status.equals("failed")) {
-                    paymentFailed = true;
-                    Helper.addErrorMessage("لم تتم عملية الدفع بنجاح, الرجاء المحاولة مرة اخرى");
-                    Helper.redirect("checkout");
-                    // do not proceed.
-                }
-            } else {
-                Helper.addErrorMessage("An error in updating! please contact customer service");
+
+            String tapChargeId = Helper.getParam("tap_id");
+            Map<String, String> map = new HashMap<>();
+            map.put("chargeId", tapChargeId);
+            Response r = reqs.putSecuredRequest(AppConstants.PUT_PAYMENT_REQUEST, map);
+            if (r.getStatus() == 200) {
+                //update cart status and fund wallet
+                paymentFailed = false;
+                stage = 5;
+                updateCartStatus("paid");
+                Helper.redirect("checkout");
+            } else if(r.getStatus() == 409){
+                //this is duplicate
+                paymentFailed = false;
+                Helper.redirect("checkout");
+            }
+            else {
+                paymentFailed = true;
+                Helper.addErrorMessage("لم تتم عملية الدفع بنجاح, الرجاء المحاولة مرة اخرى");
+                updateCartStatus("failed");
+                Helper.redirect("checkout");
             }
 
         } catch (Exception ex) {
 
         }
     }
+
+    private void updateCartStatus(String status) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("cartId", this.cartRequestResponse.getCartId());
+        map.put("paymentStatus", status);
+        Response r = reqs.putSecuredRequest(AppConstants.PUT_CART_PAYMENT, map);
+    }
+
 
 
     public CartRequest getCartRequest() {

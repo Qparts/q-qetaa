@@ -1,28 +1,23 @@
 package q.app.qetaa.beans;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 
 import org.primefaces.PrimeFaces;
 import q.app.qetaa.helpers.*;
-import q.app.qetaa.model.cart.ThreeDConfirmRequest;
 import q.app.qetaa.model.customer.PublicVehicle;
 import q.app.qetaa.model.location.PublicCountry;
 import q.app.qetaa.model.location.PublicRegion;
-import q.app.qetaa.model.quotation.CreateQuotationItemRequest;
-import q.app.qetaa.model.quotation.CreateQuotationRequest;
-import q.app.qetaa.model.quotation.CreateQuotationResponse;
-import q.app.qetaa.model.quotation.CardHolder;
+import q.app.qetaa.model.quotation.*;
 import q.app.qetaa.model.vehicle.PublicMake;
 import q.app.qetaa.model.vehicle.PublicModel;
 import q.app.qetaa.model.vehicle.PublicModelYear;
@@ -55,6 +50,7 @@ public class CreateQuotationBean implements Serializable {
     private CardHolder cardHolder;
     private CreateQuotationResponse createQuotationResponse;
     private boolean paymentFailed;
+    private PaymentRequest paymentRequest;
 
 	@Inject
 	private NotLoggedRequester reqsNotLogged;
@@ -67,32 +63,92 @@ public class CreateQuotationBean implements Serializable {
 
 	@PostConstruct
 	private void beanInit() {
+		System.out.println(1);
 		vinImageUploaded = false;
+		System.out.println(2);
 		vinBase64 = "";
+		System.out.println(3);
 		initMakes();
+		System.out.println(4);
 		init();
+		System.out.println(5);
 	}
 
 
 	public void init() {
+		System.out.println("A");
 	    this.vinImageUploaded = false;
+		System.out.println("B");
 		this.vinBase64 = "";
+		System.out.println("C");
 		this.quotationRequest = new CreateQuotationRequest();
+		System.out.println("D");
 		this.quotationRequest.setQuotationItems(new ArrayList<>());
+		System.out.println("E");
 		this.step = 0;
+		System.out.println("F");
 		addItem();
+		System.out.println("G");
 		this.selectedMake = null;
+		System.out.println("H");
 		this.selectedModel = null;
+		System.out.println("I");
 		this.selectedModelYear = null;
+		System.out.println("J");
 		this.selectedPublicVehicle = null;
+		System.out.println("K");
 		this.cardHolder = new CardHolder();
+		System.out.println("L");
         this.createQuotationResponse = new CreateQuotationResponse();
+		System.out.println("M");
         this.paymentMethod = 'N';
-
+		System.out.println("N");
+        this.paymentRequest = new PaymentRequest();
+		System.out.println("O");
         this.selectedRegion = null;
+		System.out.println("P");
         this.selectedRegionId = 0;
+		System.out.println("Q");
         PrimeFaces.current().executeScript("document.getElementById('form-1:vin-img').value = '';");
+		System.out.println("R");
     }
+
+    private void preparePaymentRequest(){
+		paymentRequest.setSalesType('Q');
+		paymentRequest.setPaymentMethod('C');
+		paymentRequest.setCustomerId(loginBean.getLoginObject().getCustomer().getId());
+		paymentRequest.setBaseAmount(15);
+		paymentRequest.setVatPercentage(.05);
+		paymentRequest.setCreated(new Date());
+		paymentRequest.setCountryId(loginBean.getLoginObject().getCustomer().getCountryId());
+		paymentRequest.setCurrency("SAR");
+		paymentRequest.setThreeDSecure(true);
+		//card info
+		Number n = Long.valueOf(cardHolder.getCcNumber());
+		paymentRequest.setNumber(n);
+		paymentRequest.setExpMonth(cardHolder.getCcMonth());
+		paymentRequest.setExpYear(cardHolder.getCcYear() - 2000);
+		paymentRequest.setCvc(Integer.valueOf(cardHolder.getCcCvc()));
+		paymentRequest.setNameOnCard(cardHolder.getCcName());
+		PublicCountry country = countryBean.getCountryFromId(loginBean.getLoginObject().getCustomer().getCountryId());
+		paymentRequest.setCountry(country.getName());
+		//customer or vendor user
+		paymentRequest.setFirstName(loginBean.getLoginObject().getCustomer().getFirstName());
+		paymentRequest.setLastName(loginBean.getLoginObject().getCustomer().getLastName());
+		paymentRequest.setEmail(loginBean.getLoginObject().getCustomer().getEmail());
+		paymentRequest.setCountryCode(country.getCountryCode());
+		paymentRequest.setMobile(loginBean.getLoginObject().getCustomer().getMobile());
+		paymentRequest.setClientIp(getClientIp());
+	}
+
+	private String getClientIp() {
+		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		String ipAddress = request.getHeader("X-FORWARDED-FOR");
+		if (ipAddress == null) {
+			ipAddress = request.getRemoteAddr();
+		}
+		return ipAddress;
+	}
 
 	public String getVin(){
 		if(this.selectedPublicVehicle != null){
@@ -173,7 +229,9 @@ public class CreateQuotationBean implements Serializable {
 		}
 		quotationRequest.setPaymentMethod(paymentMethod);
 		quotationRequest.setCardHolder(cardHolder);
-		System.out.println("payment method = " + paymentMethod);
+		preparePaymentRequest();
+		quotationRequest.setPaymentRequest(paymentRequest);
+		//no
 		if(paymentMethod == 'W'){
 			Response r = reqs.postSecuredRequest(AppConstants.POST_CREATE_QUOTATION_WIRE, quotationRequest);
 			if(r.getStatus() == 200){
@@ -186,7 +244,6 @@ public class CreateQuotationBean implements Serializable {
 		}
 		else if(paymentMethod == 'M' || paymentMethod == 'V'){
 			Response r = reqs.postSecuredRequest(AppConstants.POST_CREATE_QUOTATION_CC, quotationRequest);
-			System.out.println("response from server "+ r.getStatus());
 			if (r.getStatus() == 200) {
 				createQuotationResponse =  r.readEntity(CreateQuotationResponse.class);
 				successfulQuotationPayment();
@@ -197,6 +254,12 @@ public class CreateQuotationBean implements Serializable {
 				uploadVinImage(createQuotationResponse.getVehicleImageName());
 				uploadItemsImages(createQuotationResponse);
 				Helper.redirect(createQuotationResponse.getTransactionUrl());
+			}
+			else{
+				paymentFailed = true;
+				resetToStep(5);
+				Helper.redirect("create-quotation");
+
 			}
 		}
 	}
@@ -400,44 +463,40 @@ public class CreateQuotationBean implements Serializable {
         }
     }
 
-
-
-
     public void processPaymentResponse() {
-        try {
-            String paymentId = Helper.getParam("id");// some string
-            String status = Helper.getParam("status");// paid , failed
-            ThreeDConfirmRequest threeD = new ThreeDConfirmRequest();
-            threeD.setQuotationId(createQuotationResponse.getQuotationId());
-            threeD.setCustomerId(quotationRequest.getCustomerId());
-            threeD.setType('Q');
-            threeD.setId(paymentId);
-            threeD.setStatus(status);
-            Response r = reqs.putSecuredRequest(AppConstants.PUT_3D_SECURE_RESPONSE, threeD);
-            if (r.getStatus() == 201) {
-                Map<String,Object> map = new HashMap<String,Object>();
-                map.put("quotationId", createQuotationResponse.getQuotationId());
-                map.put("paymentStatus", status);
-                Response r2 = reqs.putSecuredRequest(AppConstants.PUT_QUOTATION_PAYMENT, map);
-                if (status.equals("paid")) {
-                    paymentFailed = false;
-                    resetToStep(0);
-                    Helper.redirect("quotation-created");
-                    //update
-                } else if (status.equals("failed")) {
-                    paymentFailed = true;
-                    resetToStep(5);
-                    Helper.redirect("create-quotation");
-                }
+		try {
+			String tapChargeId = Helper.getParam("tap_id");
+			Map<String, String> map = new HashMap<>();
+			map.put("chargeId", tapChargeId);
+			Response r = reqs.putSecuredRequest(AppConstants.PUT_PAYMENT_REQUEST, map);
+			if (r.getStatus() == 200) {
+				updateQuotationStatus("paid");
+				paymentFailed = false;
+				resetToStep(0);
+				Helper.redirect("quotation-created");
+			} else if(r.getStatus() == 409){
+				//this is duplicate
+				paymentFailed = false;
+				resetToStep(0);
+				Helper.redirect("quotation-created");
+			}
+			else {
+				updateQuotationStatus("failed");
+				paymentFailed = true;
+				resetToStep(5);
+				Helper.redirect("create-quotation");
+			}
+		} catch (Exception ex) {
 
-            } else if(r.getStatus() == 406){
-                Helper.addErrorMessage("An error in updating! please contact customer service");
-            }
+		}
+	}
 
-        } catch (Exception ex) {
-
-        }
-    }
+	private void updateQuotationStatus(String status){
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("quotationId", createQuotationResponse.getQuotationId());
+		map.put("paymentStatus", status);
+		Response r2 = reqs.putSecuredRequest(AppConstants.PUT_QUOTATION_PAYMENT, map);
+	}
 
 
 

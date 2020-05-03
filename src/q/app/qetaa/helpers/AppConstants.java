@@ -8,6 +8,7 @@ public class AppConstants {
 	private final static String PUBLIC_CUSTOMER_SERVICE = SysProps.getValue("customerPublicService");
 	private final static String PUBLIC_CART_SERVICE = SysProps.getValue("cartPublicService");
 	private final static String PUBLIC_LOCATION_SERVICE = SysProps.getValue("locationPublicService");
+	private final static String INVOICE_SERVICE = SysProps.getValue("invoiceService");
 	public final static String APP_SECRET = SysProps.getValue("appSecret");
 
 	//===============HOST=================//
@@ -26,12 +27,16 @@ public class AppConstants {
 
 	//===============VENDORS====================//
 	public final static String POST_JOIN_US = /*VENDOR_SERVICE + */"vendor-join-request";
-	
+
+
+	/////////// INVOICE SERVICE CALLS ///////////
+	public final static String PUT_PAYMENT_REQUEST = INVOICE_SERVICE + "payment-order";
+
 
 	//////////// CART SERVICE CALLS /////////////
 	public final static String POST_CART_CREDIT_CARD = PUBLIC_CART_SERVICE + "cart/credit-card";
 	public final static String POST_CART_WIRE_TRANSFER = PUBLIC_CART_SERVICE + "cart/wire-transfer";
-	public final static String PUT_3D_SECURE_RESPONSE = PUBLIC_CART_SERVICE + "payment/3dsecure-response";
+	public final static String PUT_CART_PAYMENT = PUBLIC_CART_SERVICE + "cart-payment";
 	public final static String GET_BANKS = PUBLIC_CART_SERVICE + "banks";
 	public final static String getPromotionCodeFromCode(String code) {
 		return PUBLIC_CART_SERVICE + "discount/promocode/" + code;
@@ -68,6 +73,7 @@ public class AppConstants {
 	public final static String POST_CREATE_QUOTATION_CC = PUBLIC_QUOTATION_SERVICE + "quotation/credit-card";
 	public final static String PUT_QUOTATION_PAYMENT = PUBLIC_QUOTATION_SERVICE + "quotation/payment";
 	public final static String PUT_CLOSE_QUOTATION = PUBLIC_QUOTATION_SERVICE + "close-quotation";
+
 	public final static String getQuotation(long quotationId) {
 		return PUBLIC_QUOTATION_SERVICE + "quotation/" + quotationId;
 	}

@@ -17,12 +17,20 @@ public class CreateQuotationRequest {
     private List<CreateQuotationItemRequest> quotationItems;
     private Character paymentMethod;
     private CardHolder cardHolder;
+    private PaymentRequest paymentRequest;
     @JsonIgnore
     private Boolean customerVehicleNewlyCreated;
     @JsonIgnore
     private String imageString;
 
 
+    public PaymentRequest getPaymentRequest() {
+        return paymentRequest;
+    }
+
+    public void setPaymentRequest(PaymentRequest paymentRequest) {
+        this.paymentRequest = paymentRequest;
+    }
 
     public Boolean getCustomerVehicleNewlyCreated() {
         return customerVehicleNewlyCreated;

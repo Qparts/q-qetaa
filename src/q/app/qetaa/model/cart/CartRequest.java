@@ -2,6 +2,7 @@ package q.app.qetaa.model.cart;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import q.app.qetaa.model.customer.PublicAddress;
+import q.app.qetaa.model.quotation.PaymentRequest;
 
 import java.io.Serializable;
 import java.util.List;
@@ -19,6 +20,8 @@ public class CartRequest implements Serializable {
     private Integer preferredCuorier;
     private List<CartItemRequest> cartItems;
     private double walletAmount;
+    private PaymentRequest paymentRequest;
+
 
 
 
@@ -105,6 +108,15 @@ public class CartRequest implements Serializable {
     @JsonIgnore
     public double getGrandTotalAfterDiscount(){
         return getSubTotalAfterDiscount() + getTotalVatAfterDiscount() - walletAmount;
+    }
+
+
+    public PaymentRequest getPaymentRequest() {
+        return paymentRequest;
+    }
+
+    public void setPaymentRequest(PaymentRequest paymentRequest) {
+        this.paymentRequest = paymentRequest;
     }
 
     public String getCcCvc() {

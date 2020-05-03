@@ -241,7 +241,7 @@
 								<h:selectOneMenu value="#{cartBean.paymentMethod}"
 												 id="payment" styleClass="form-control">
 									<f:selectItem itemValue="N" itemLabel="#{lex.selectPayment}" />
-									<f:selectItem itemValue="V" itemLabel="#{lex.visa} - #{lex.masterCard} - #{lex.mada} "/>
+									<f:selectItem itemValue="V" itemLabel="#{lex.visa} - #{lex.masterCard} - #{lex.mada} - #{lex.amex}"/>
 									<f:ajax execute="@form" render=":form-3"/>
 								</h:selectOneMenu>
 								<br /> <br />
@@ -250,8 +250,10 @@
 							<div class="col-xs-12" id="credit-card-div"
 								 style="display:#{cartBean.paymentMethod eq 'V' ? 'block' : 'none'};">
 								<div align="center">
-									<h:graphicImage value="/resources/images/visa.png" />
-									<h:graphicImage value="/resources/images/mastercard.png" />
+									<h:graphicImage value="/resources/images/visa.png" style="width: 50px" />
+									<h:graphicImage value="/resources/images/mastercard.png" style="width: 50px" />
+									<h:graphicImage value="/resources/images/amex.jpg" style="width: 50px" />
+									<h:graphicImage value="/resources/images/mada.png" style="width: 50px" />
 									<br /> <br />
 								</div>
 								<div class="col-md-3 col-md-offset-3 col-xs-12">
@@ -287,13 +289,15 @@
 						<br />
 						<div align="center" class="col-md-2 col-md-offset-5  col-xs-12">
 							<br />
+							<p:messages/>
+							<br/>
 							<h:commandButton actionListener="#{cartBean.checkout()}"
 											 styleClass="checkout-btn" value="#{lex.checkout}">
 								<f:ajax execute="@form" render=":steps-panel @form"/>
 							</h:commandButton>
 							<br /> <br />
 							<h:commandButton value="#{lex.previous}" styleClass="btn"
-											 actionListener="#{partssOrderBean.previous()}">
+											 rendered="false" actionListener="#{partssOrderBean.previous()}">
 								<f:ajax execute="@this" render=":steps-panel"/>
 								<f:param name="order" value="#{partsOrdesrBean.cart.id}"/>
 							</h:commandButton>
